@@ -1,0 +1,10 @@
+NEXT_PUBLIC_SUPABASE_URL=https://fvmwehugjdlgqpgxipnu.supabase.co/
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2bXdlaHVnamRsZ3FwZ3hpcG51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDY2Mjk5OTYsImV4cCI6MjAyMjIwNTk5Nn0.B0lDnCZKZ81W4IdeL10AkEOPR5apttSMSZyyBIL5slg
+
+
+
+
+
+
+
+name file .env.local
