@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 
 export default function Landing() {
     return (
-    <main className="h-screen">
+    <main className="h-screen w-full">
       <Navbar />
 
       <div className="bg-white pagecontainer h-full pt-20">
