@@ -1,3 +1,6 @@
+//this open page file in the app is the localhost:3000 default load to file. this will be exchanged for the landing page in the future.
+
+
 import DeployButton from "../components/DeployButton";
 import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
