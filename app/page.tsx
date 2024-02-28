@@ -1,54 +1,19 @@
-import DeployButton from "../components/DeployButton";
-import AuthButton from "../components/AuthButton";
-import { createClient } from "@/utils/supabase/server";
-import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
-import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
-import Header from "@/components/Header";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
-export default async function Index() {
-  const canInitSupabaseClient = () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
-    try {
-      createClient();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
+export default function Landing() {
+    return (
+    <main className="h-screen w-full">
+      <Navbar />
 
-  const isSupabaseConnected = canInitSupabaseClient();
-
-  return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-        <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-          <DeployButton />
-          {isSupabaseConnected && <AuthButton />}
+      <div className="bg-white pagecontainer h-full pt-20">
+        <div className="container mx-auto text-black">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et egestas quis ipsum suspendisse ultrices gravida dictum. Netus et malesuada fames ac turpis egestas sed tempus urna. Vitae purus faucibus ornare suspendisse sed nisi lacus sed viverra. Mattis nunc sed blandit libero. Potenti nullam ac tortor vitae purus faucibus. Est ultricies integer quis auctor elit sed vulputate. Quam adipiscing vitae proin sagittis nisl rhoncus mattis rhoncus urna. Praesent elementum facilisis leo vel fringilla. Diam sit amet nisl suscipit adipiscing bibendum est ultricies. Faucibus a pellentesque sit amet porttitor eget dolor morbi non. Proin nibh nisl condimentum id venenatis a condimentum vitae. Arcu cursus euismod quis viverra nibh cras pulvinar mattis nunc. Venenatis tellus in metus vulputate eu scelerisque felis imperdiet proin. Sed faucibus turpis in eu mi bibendum. Volutpat lacus laoreet non curabitur gravida. Fames ac turpis egestas sed tempus urna et pharetra. Sem integer vitae justo eget magna fermentum. Tortor at risus viverra adipiscing at in tellus integer.</p>
+          <p>Massa tempor nec feugiat nisl pretium fusce. Convallis convallis tellus id interdum velit laoreet id donec. Suspendisse in est ante in. Id aliquet risus feugiat in ante metus dictum at tempor. Justo laoreet sit amet cursus sit amet dictum sit amet. Non sodales neque sodales ut etiam sit amet. Bibendum arcu vitae elementum curabitur. Faucibus pulvinar elementum integer enim. Neque ornare aenean euismod elementum nisi quis. Maecenas volutpat blandit aliquam etiam erat velit.</p>
+          <p>Turpis massa tincidunt dui ut ornare lectus sit. Amet consectetur adipiscing elit duis. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Lectus sit amet est placerat in egestas. Sit amet tellus cras adipiscing enim. Venenatis lectus magna fringilla urna porttitor. Est ante in nibh mauris cursus mattis molestie. Fermentum et sollicitudin ac orci phasellus. Risus sed vulputate odio ut enim blandit volutpat maecenas volutpat. A erat nam at lectus urna duis convallis. Netus et malesuada fames ac turpis. Adipiscing at in tellus integer. Convallis a cras semper auctor.</p>
         </div>
-      </nav>
-
-      <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-        <Header />
-        <main className="flex-1 flex flex-col gap-6">
-          <h2 className="font-bold text-4xl mb-4">Next steps</h2>
-          {isSupabaseConnected ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-        </main>
       </div>
-
-      <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
-        <p>
-          Powered by{" "}
-          <a
-            href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-            target="_blank"
-            className="font-bold hover:underline"
-            rel="noreferrer"
-          >
-            Supabase
-          </a>
-        </p>
-      </footer>
-    </div>
-  );
+      <Footer />
+    </main>
+    )
 }
