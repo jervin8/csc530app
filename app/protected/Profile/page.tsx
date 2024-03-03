@@ -6,12 +6,16 @@ import { redirect } from "next/navigation";
 
 interface UserData {
   email: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 export default function ProfilePage() {
   const supabase = createClient();
   const [userData, setUserData] = useState<UserData>({
     email: "",
+    first_name: "",
+    last_name: "",
   });
   const [notification, setNotification] = useState<{ type: string; message: string } | null>(null);
 
@@ -23,9 +27,12 @@ export default function ProfilePage() {
         return; // Exit early if there's an error
       }
       if (data && data.user) {
-        const { email } = data.user;
+        const { email, user_metadata } = data.user;
+        const { first_name, last_name } = user_metadata || {};
         setUserData({
           email: email || "",
+          first_name: first_name || "",
+          last_name: last_name || "",
         });
       } else {
         console.error("No user data found.");
@@ -35,27 +42,33 @@ export default function ProfilePage() {
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setUserData({
       ...userData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
-const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  const { email } = userData;
-  try {
-    const { error } = await supabase.auth.updateUser({
-      email,
-    });
-    if (error) {
-      throw new Error("Could not update profile");
+  const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { email, first_name, last_name } = userData;
+    try {
+      const { error } = await supabase.auth.updateUser({
+        email,
+        data: {
+          first_name,
+          last_name
+        }
+      });
+      if (error) {
+        throw new Error("Could not update profile");
+      }
+      setNotification({ type: "success", message: "Profile updated successfully" });
+    } catch (error: any) {
+      setNotification({ type: "error", message: error.message });
     }
-    setNotification({ type: "success", message: "Profile updated successfully" });
-  } catch (error: any) {
-    setNotification({ type: "error", message: error.message });
-  }
-};
+  };
+  
 
   const clearNotification = () => {
     setNotification(null);
@@ -85,7 +98,22 @@ const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
             required
             className="rounded-md px-4 py-2 bg-inherit border mb-4"
           />
-        
+          <label>First Name:</label>
+          <input
+            type="text"
+            name="first_name"
+            value={userData.first_name}
+            onChange={handleChange}
+            className="rounded-md px-4 py-2 bg-inherit border mb-4"
+          />
+          <label>Last Name:</label>
+          <input
+            type="text"
+            name="last_name"
+            value={userData.last_name}
+            onChange={handleChange}
+            className="rounded-md px-4 py-2 bg-inherit border mb-4"
+          />
           <button
             type="submit"
             className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
