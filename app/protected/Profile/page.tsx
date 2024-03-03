@@ -6,15 +6,14 @@ import { redirect } from "next/navigation";
 
 interface UserData {
   email: string;
-  phone: string;
 }
 
 export default function ProfilePage() {
   const supabase = createClient();
   const [userData, setUserData] = useState<UserData>({
     email: "",
-    phone: "",
   });
+  const [notification, setNotification] = useState<{ type: string; message: string } | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -24,10 +23,9 @@ export default function ProfilePage() {
         return; // Exit early if there's an error
       }
       if (data && data.user) {
-        const { email, phone } = data.user;
+        const { email } = data.user;
         setUserData({
           email: email || "",
-          phone: phone || "",
         });
       } else {
         console.error("No user data found.");
@@ -43,18 +41,24 @@ export default function ProfilePage() {
     });
   };
 
-  const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { email, phone } = userData;
+const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  const { email } = userData;
+  try {
     const { error } = await supabase.auth.updateUser({
       email,
-      phone,
     });
     if (error) {
-      alert("Could not update profile");
-    } else {
-      alert("Profile updated successfully");
+      throw new Error("Could not update profile");
     }
+    setNotification({ type: "success", message: "Profile updated successfully" });
+  } catch (error: any) {
+    setNotification({ type: "error", message: error.message });
+  }
+};
+
+  const clearNotification = () => {
+    setNotification(null);
   };
 
   const signOut = async () => {
@@ -63,7 +67,7 @@ export default function ProfilePage() {
     return redirect("/login");
   };
 
-  return userData ? (
+  return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
       <div className=" text-center">
         <Link href="/protected">
@@ -81,14 +85,7 @@ export default function ProfilePage() {
             required
             className="rounded-md px-4 py-2 bg-inherit border mb-4"
           />
-          <label>Phone:</label>
-          <input
-            type="text"
-            name="phone"
-            value={userData.phone}
-            onChange={handleChange}
-            className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          />
+        
           <button
             type="submit"
             className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
@@ -105,13 +102,13 @@ export default function ProfilePage() {
           Logout
         </button>
       </div>
+      {/* Notification */}
+      {notification && (
+        <div className={`absolute bottom-4 right-4 bg-${notification.type === "success" ? "green" : "red"}-500 text-white p-4 rounded-md`}>
+          <p>{notification.message}</p>
+          <button onClick={clearNotification} className="ml-2">Close</button>
+        </div>
+      )}
     </div>
-  ) : (
-    <Link
-      href="/login"
-      className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
-    >
-      Login
-    </Link>
   );
 }
