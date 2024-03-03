@@ -13,4 +13,10 @@ export default async function Kanji() {
     if (!user) {
       return redirect("/login");
     }
+
+return(
+  <main>
+    
+  </main>
+)
 }
