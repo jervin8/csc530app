@@ -4,14 +4,19 @@ import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+// Defining the user data interface
 interface UserData {
   email: string;
   first_name?: string;
   last_name?: string;
 }
 
+// ProfilePage component
 export default function ProfilePage() {
+  // Initializing Supabase client
   const supabase = createClient();
+
+  // State variables for user data and notification
   const [userData, setUserData] = useState<UserData>({
     email: "",
     first_name: "",
@@ -19,6 +24,7 @@ export default function ProfilePage() {
   });
   const [notification, setNotification] = useState<{ type: string; message: string } | null>(null);
 
+  // Fetching user data on component mount
   useEffect(() => {
     const fetchUserData = async () => {
       const { data, error } = await supabase.auth.getUser();
@@ -41,6 +47,7 @@ export default function ProfilePage() {
     fetchUserData();
   }, []);
 
+  // Handling form input change
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserData({
@@ -49,6 +56,7 @@ export default function ProfilePage() {
     });
   };
 
+  // Handling form submission to update user profile
   const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { email, first_name, last_name } = userData;
@@ -57,7 +65,7 @@ export default function ProfilePage() {
         email,
         data: {
           first_name,
-          last_name
+          last_name,
         }
       });
       if (error) {
@@ -68,18 +76,23 @@ export default function ProfilePage() {
       setNotification({ type: "error", message: error.message });
     }
   };
-  
 
+  // Handling sign-out button click
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut(); // Sign out using Supabase auth
+      window.location.href = "/login"; // Redirect to login page
+    } catch (error: any) {
+      console.error("Error signing out:", error.message);
+    }
+  };
+
+  // Clearing notification
   const clearNotification = () => {
     setNotification(null);
   };
 
-  const signOut = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    return redirect("/login");
-  };
-
+  // Rendering the profile page content
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
       <div className=" text-center">
@@ -124,7 +137,7 @@ export default function ProfilePage() {
       </div>
       <div className="flex items-center gap-4">
         <button
-          onClick={signOut}
+          onClick={handleSignOut} // Handling sign-out button click
           className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
         >
           Logout
