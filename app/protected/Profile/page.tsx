@@ -26,13 +26,13 @@ export default function ProfilePage() {
 
   // Fetching user data on component mount
   useEffect(() => {
-    const fetchUserData = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (error) {
-        console.error("Error fetching user data:", error.message);
-        return; // Exit early if there's an error
-      }
-      if (data && data.user) {
+    const checkLoggedIn = async () => {
+      try {
+        const { data, error } = await supabase.auth.getUser();
+        if (error || !data || !data.user) {
+          window.location.href = "/login"; // Redirect to home page if not logged in
+          return;
+        }
         const { email, user_metadata } = data.user;
         const { first_name, last_name } = user_metadata || {};
         setUserData({
@@ -40,11 +40,11 @@ export default function ProfilePage() {
           first_name: first_name || "",
           last_name: last_name || "",
         });
-      } else {
-        console.error("No user data found.");
+      } catch (error: any) {
+        console.error("Error checking login status:", error.message);
       }
     };
-    fetchUserData();
+    checkLoggedIn();
   }, []);
 
   // Handling form input change
