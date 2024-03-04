@@ -13,7 +13,7 @@ export default function Pricing() {
             </div>
             
             <Footer />
-      </main>
+        </main>
       
     )
 }
