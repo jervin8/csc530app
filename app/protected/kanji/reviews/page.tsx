@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 
-export default async function Vocab() {
+export default async function KanjiReview() {
     const supabase = createClient();
   
     //redirects to login page if not an authenticated/logged in user

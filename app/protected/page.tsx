@@ -1,10 +1,12 @@
 import AuthButton from "@/components/AuthButton";
 import Footer from "@/components/Footer";
-import KanjiButton from "@/components/ProtectedPageComps/KanjiButton";
 import Navbar from "@/components/Navbar";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import VocabButton from "@/components/ProtectedPageComps/VocabButton";
+import KanjiReviewButton from "@/components/ProtectedPageComps/KanjiReviewButton";
+import VocabReviewButton from "@/components/ProtectedPageComps/VocabReviewButton";
+import VocabLessonButton from "@/components/ProtectedPageComps/VocabLessonButton";
+import KanjiLessonButton from "@/components/ProtectedPageComps/KanjiLessonButton";
 
 
 export default async function Dashboard() {
@@ -19,6 +21,7 @@ export default async function Dashboard() {
     return redirect("/login");
   }
 
+  //selects users
   const { data: Users } = await supabase.from("Users").select();
 
 return (
@@ -26,8 +29,12 @@ return (
     <Navbar/>
     <div className="h-screen pt-20">
         <div className="container h-full mx-auto text-white">
-            <VocabButton />
-            <KanjiButton />
+            <h1>Lessons</h1>
+            <VocabLessonButton />
+            <KanjiLessonButton />
+            <h1>Reviews</h1>
+            <VocabReviewButton />
+            <KanjiReviewButton />
         </div>
     </div>
     <Footer />

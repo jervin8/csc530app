@@ -1,11 +1,11 @@
 "use client"
 import { useRouter } from "next/navigation";
 
-export default function VocabButton() {
+export default function KanjiReviewButton() {
     const router = useRouter();
 
     function buttonClicked() {
-        router.push("/protected/kanji");
+        router.push("/protected/kanji/reviews");
     }
 
     return(
