@@ -29,11 +29,11 @@ return (
     <Navbar/>
     <div className="h-screen pt-20">
         <div className="container h-full mx-auto text-white">
-            <h1>Lessons</h1>
+            <h1>Vocab</h1>
             <VocabLessonButton />
-            <KanjiLessonButton />
-            <h1>Reviews</h1>
             <VocabReviewButton />
+            <h1>Kanji</h1>
+            <KanjiLessonButton />
             <KanjiReviewButton />
         </div>
     </div>
