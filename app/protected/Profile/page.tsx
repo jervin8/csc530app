@@ -1,8 +1,6 @@
 "use client"
 import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import Link from "next/link";
-import { redirect } from "next/navigation";
 import Navbar from "./Navbar";
 
 // Defining the user data interface
@@ -13,6 +11,7 @@ interface UserData {
   profile_fields?: {
     [key: string]: string;
   };
+  darkMode?: boolean;
 }
 
 // ProfilePage component
@@ -25,7 +24,8 @@ export default function ProfilePage() {
     email: "",
     first_name: "",
     last_name: "",
-    profile_fields: {}
+    profile_fields: {},
+    darkMode: false, // Initialize dark mode as false (light mode)
   });
   const [notification, setNotification] = useState<{ type: string; message: string } | null>(null);
   const [currentView, setCurrentView] = useState<"profile" | "settings">("profile");
@@ -40,12 +40,13 @@ export default function ProfilePage() {
           return;
         }
         const { email, user_metadata } = data.user;
-        const { first_name, last_name, profile_fields } = user_metadata || {};
+        const { first_name, last_name, profile_fields, darkMode } = user_metadata || {};
         setUserData({
           email: email || "",
           first_name: first_name || "",
           last_name: last_name || "",
-          profile_fields: profile_fields || {}
+          profile_fields: profile_fields || {},
+          darkMode: darkMode || false,
         });
       } catch (error: any) {
         console.error("Error checking login status:", error.message);
@@ -54,15 +55,15 @@ export default function ProfilePage() {
     checkLoggedIn();
   }, []);
 
-  // Handling form input change for profile fields
-  const handleProfileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  // Handling form input change for profile fields and settings
+  const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
     setUserData({
       ...userData,
-      [name]: value,
+      [name]: newValue,
     });
   };
-  
 
   // Handling form input change for additional profile fields
   const handleAdditionalFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -76,10 +77,10 @@ export default function ProfilePage() {
     });
   };
 
-  // Handling form submission to update profile fields
+  // Handling form submission to update profile fields and settings
   const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { email, first_name, last_name, profile_fields } = userData;
+    const { email, first_name, last_name, profile_fields, darkMode } = userData;
     try {
       const { error } = await supabase.auth.updateUser({
         email,
@@ -87,6 +88,7 @@ export default function ProfilePage() {
           first_name,
           last_name,
           profile_fields,
+          darkMode,
         }
       });
       if (error) {
@@ -136,51 +138,72 @@ export default function ProfilePage() {
           </div>
           {/* Form for updating profile fields */}
           {currentView === "profile" && (
-           <form onSubmit={handleUpdate} className="mb-8">
-           <label className="block text-gray-700 mb-2">Email:</label>
-           <input
-             type="email"
-             name="email"
-             value={userData.email}
-             onChange={handleProfileChange}
-             className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
-           />
-           <label className="block text-gray-700 mb-2">First Name:</label>
-           <input
-             type="text"
-             name="first_name"
-             value={userData.first_name}
-             onChange={handleProfileChange}
-             className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
-           />
-           <label className="block text-gray-700 mb-2">Last Name:</label>
-           <input
-             type="text"
-             name="last_name"
-             value={userData.last_name}
-             onChange={handleProfileChange}
-             className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
-           />
-           {/* Additional profile fields */}
-           {Object.entries(userData.profile_fields || {}).map(([key, value]) => (
-             <div key={key}>
-               <label className="block text-gray-700 mb-2">{key}</label>
-               <input
-                 type="text"
-                 name={key}
-                 value={value}
-                 onChange={handleAdditionalFieldChange}
-                 className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
-               />
-             </div>
-           ))}
-           <button
-             type="submit"
-             className="bg-green-700 rounded-md px-4 py-2 text-white mb-2 w-full"
-           >
-             Update Profile
-           </button>
-         </form>
+            <form onSubmit={handleUpdate} className="mb-8">
+              <label className="block text-gray-700 mb-2">Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={userData.email}
+                readOnly
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+              />
+              <label className="block text-gray-700 mb-2">First Name:</label>
+              <input
+                type="text"
+                name="first_name"
+                value={userData.first_name}
+                onChange={handleProfileChange}
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+              />
+              <label className="block text-gray-700 mb-2">Last Name:</label>
+              <input
+                type="text"
+                name="last_name"
+                value={userData.last_name}
+                onChange={handleProfileChange}
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+              />
+              {/* Additional profile fields */}
+              {Object.entries(userData.profile_fields || {}).map(([key, value]) => (
+                <div key={key}>
+                  <label className="block text-gray-700 mb-2">{key}</label>
+                  <input
+                    type="text"
+                    name={key}
+                    value={value}
+                    onChange={handleAdditionalFieldChange}
+                    className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+                  />
+                </div>
+              ))}
+              <button
+                type="submit"
+                className="bg-green-700 rounded-md px-4 py-2 text-white mb-2 w-full"
+              >
+                Update Profile
+              </button>
+            </form>
+          )}
+          {/* Settings form */}
+          {currentView === "settings" && (
+            <form onSubmit={handleUpdate} className="mb-8">
+              <label className="block text-gray-700 mb-2">Website appearance:</label>
+              <select
+                name="darkMode"
+                value={userData.darkMode ? "dark" : "light"}
+                onChange={handleProfileChange}
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+              >
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+              <button
+                type="submit"
+                className="bg-green-700 rounded-md px-4 py-2 text-white mb-2 w-full"
+              >
+                Save Settings
+              </button>
+            </form>
           )}
           {/* Logout button */}
           <div className="text-center">
