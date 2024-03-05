@@ -1,8 +1,8 @@
-import Navbar from "../../public_components/navbar";
+import Navbar from "@/components/Navbar"
 
 export default function About() {
     return (
-        <main className="h-screen">
+        <main className="w-screen">
             <Navbar/>
 
             <div className="pagecontainer pt-20">
