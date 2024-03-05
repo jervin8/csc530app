@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import Navbar from "./Navbar";
+import Navbar from "./ProfileNavbar";
 
 
 // Defining the user data interface
