@@ -5,12 +5,14 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import Navbar from "./Navbar";
 
-
 // Defining the user data interface
 interface UserData {
   email: string;
   first_name?: string;
   last_name?: string;
+  profile_fields?: {
+    [key: string]: string;
+  };
 }
 
 // ProfilePage component
@@ -18,13 +20,15 @@ export default function ProfilePage() {
   // Initializing Supabase client
   const supabase = createClient();
 
-  // State variables for user data and notification
+  // State variables for user data, notification, and current view (profile or settings)
   const [userData, setUserData] = useState<UserData>({
     email: "",
     first_name: "",
     last_name: "",
+    profile_fields: {}
   });
   const [notification, setNotification] = useState<{ type: string; message: string } | null>(null);
+  const [currentView, setCurrentView] = useState<"profile" | "settings">("profile");
 
   // Fetching user data on component mount
   useEffect(() => {
@@ -36,11 +40,12 @@ export default function ProfilePage() {
           return;
         }
         const { email, user_metadata } = data.user;
-        const { first_name, last_name } = user_metadata || {};
+        const { first_name, last_name, profile_fields } = user_metadata || {};
         setUserData({
           email: email || "",
           first_name: first_name || "",
           last_name: last_name || "",
+          profile_fields: profile_fields || {}
         });
       } catch (error: any) {
         console.error("Error checking login status:", error.message);
@@ -49,25 +54,39 @@ export default function ProfilePage() {
     checkLoggedIn();
   }, []);
 
-  // Handling form input change
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  // Handling form input change for profile fields
+  const handleProfileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserData({
       ...userData,
       [name]: value,
     });
   };
+  
 
-  // Handling form submission to update user profile
+  // Handling form input change for additional profile fields
+  const handleAdditionalFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData({
+      ...userData,
+      profile_fields: {
+        ...userData.profile_fields,
+        [name]: value,
+      }
+    });
+  };
+
+  // Handling form submission to update profile fields
   const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { email, first_name, last_name } = userData;
+    const { email, first_name, last_name, profile_fields } = userData;
     try {
       const { error } = await supabase.auth.updateUser({
         email,
         data: {
           first_name,
           last_name,
+          profile_fields,
         }
       });
       if (error) {
@@ -97,65 +116,90 @@ export default function ProfilePage() {
   // Rendering the profile page content
   return (
     <main className="h-screen w-full">
-  <Navbar/>
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
-    
-      <div className=" text-center">
-        <Link href="/protected">
-          Hey, click here to go to your profile page!
-        </Link>
-      </div>
-      <div className="mb-4">
-        <form onSubmit={handleUpdate}>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={userData.email}
-            onChange={handleChange}
-            required
-            className="rounded-md px-4 py-2 bg-inherit border mb-4"
-          />
-          <label>First Name:</label>
-          <input
-            type="text"
-            name="first_name"
-            value={userData.first_name}
-            onChange={handleChange}
-            className="rounded-md px-4 py-2 bg-inherit border mb-4"
-          />
-          <label>Last Name:</label>
-          <input
-            type="text"
-            name="last_name"
-            value={userData.last_name}
-            onChange={handleChange}
-            className="rounded-md px-4 py-2 bg-inherit border mb-4"
-          />
-          <button
-            type="submit"
-            className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
-          >
-            Update Profile
-          </button>
-        </form>
-      </div>
-      <div className="flex items-center gap-4">
-        <button
-          onClick={handleSignOut} // Handling sign-out button click
-          className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
-        >
-          Logout
-        </button>
-      </div>
-      {/* Notification */}
-      {notification && (
-        <div className={`absolute bottom-4 right-4 bg-${notification.type === "success" ? "green" : "red"}-500 text-white p-4 rounded-md`}>
-          <p>{notification.message}</p>
-          <button onClick={clearNotification} className="ml-2">Close</button>
+      <Navbar/>
+      <div className="h-screen flex justify-center items-center bg-gray-100">
+        <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+          {/* Switching between profile and settings */}
+          <div className="mb-8">
+            <button
+              onClick={() => setCurrentView("profile")}
+              className={`py-2 px-4 rounded-md ${currentView === "profile" ? "bg-green-700 text-white" : "bg-gray-300 text-gray-700"} mr-2`}
+            >
+              Profile
+            </button>
+            <button
+              onClick={() => setCurrentView("settings")}
+              className={`py-2 px-4 rounded-md ${currentView === "settings" ? "bg-green-700 text-white" : "bg-gray-300 text-gray-700"}`}
+            >
+              Settings
+            </button>
+          </div>
+          {/* Form for updating profile fields */}
+          {currentView === "profile" && (
+           <form onSubmit={handleUpdate} className="mb-8">
+           <label className="block text-gray-700 mb-2">Email:</label>
+           <input
+             type="email"
+             name="email"
+             value={userData.email}
+             onChange={handleProfileChange}
+             className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+           />
+           <label className="block text-gray-700 mb-2">First Name:</label>
+           <input
+             type="text"
+             name="first_name"
+             value={userData.first_name}
+             onChange={handleProfileChange}
+             className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+           />
+           <label className="block text-gray-700 mb-2">Last Name:</label>
+           <input
+             type="text"
+             name="last_name"
+             value={userData.last_name}
+             onChange={handleProfileChange}
+             className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+           />
+           {/* Additional profile fields */}
+           {Object.entries(userData.profile_fields || {}).map(([key, value]) => (
+             <div key={key}>
+               <label className="block text-gray-700 mb-2">{key}</label>
+               <input
+                 type="text"
+                 name={key}
+                 value={value}
+                 onChange={handleAdditionalFieldChange}
+                 className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+               />
+             </div>
+           ))}
+           <button
+             type="submit"
+             className="bg-green-700 rounded-md px-4 py-2 text-white mb-2 w-full"
+           >
+             Update Profile
+           </button>
+         </form>
+          )}
+          {/* Logout button */}
+          <div className="text-center">
+            <button
+              onClick={handleSignOut} // Handling sign-out button click
+              className="py-2 px-4 rounded-md bg-gray-700 text-white hover:bg-gray-800"
+            >
+              Logout
+            </button>
+          </div>
+          {/* Notification */}
+          {notification && (
+            <div className={`absolute bottom-4 right-4 bg-${notification.type === "success" ? "green" : "red"}-500 text-white p-4 rounded-md`}>
+              <p>{notification.message}</p>
+              <button onClick={clearNotification} className="ml-2">Close</button>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
     </main>
   );
 }
