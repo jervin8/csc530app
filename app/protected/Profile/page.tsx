@@ -3,6 +3,8 @@ import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import Navbar from "./Navbar";
+
 
 // Defining the user data interface
 interface UserData {
@@ -94,7 +96,10 @@ export default function ProfilePage() {
 
   // Rendering the profile page content
   return (
+    <main className="h-screen w-full">
+  <Navbar/>
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+    
       <div className=" text-center">
         <Link href="/protected">
           Hey, click here to go to your profile page!
@@ -151,5 +156,6 @@ export default function ProfilePage() {
         </div>
       )}
     </div>
+    </main>
   );
 }
