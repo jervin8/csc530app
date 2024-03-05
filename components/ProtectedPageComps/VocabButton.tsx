@@ -5,7 +5,7 @@ export default function VocabButton() {
     const router = useRouter();
 
     function buttonClicked() {
-        router.push("/protected/dashboard/vocab");
+        router.push("/protected/vocab");
     }
 
     return(
