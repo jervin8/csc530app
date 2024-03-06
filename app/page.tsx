@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 export default function Landing() {
 
   return (
-    <main className="h-full w-full bg-white dark:bg-slate-900">
+    <main className="h-full w-full bg-white dark:bg-slate-800">
       <Navbar />
       <PrimarySection />
       <SectionTitle pretitle="Space Repetition Benefits" title=" Why should you learn through space repitition">
