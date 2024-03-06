@@ -5,8 +5,8 @@ export default function About() {
         <main className="w-screen">
             <Navbar/>
 
-            <div className="pagecontainer pt-20">
-                <div className="container h-full mx-auto text-white">
+            <div className="bg-gray-100 dark:bg-slate-700 text-black dark:text-white pt-20">
+                <div className="container h-full mx-auto">
                     <p>About Page WIP</p>
                 </div>
             </div>
