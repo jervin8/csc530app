@@ -188,7 +188,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                 type="email"
                 name="email"
                 value={userData.email}
-                readOnly
+                onChange={handleProfileChange}
                 className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
               />
               <label className="block text-gray-700 mb-2">First Name:</label>
