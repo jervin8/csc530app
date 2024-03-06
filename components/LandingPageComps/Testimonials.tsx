@@ -19,7 +19,7 @@ interface MarkProps {
 const Testimonials: React.FC = () => {
   return (
     <Container>
-      <div className="grid gap-10 lg:grid-cols-2 xl:grid-cols-3 rounded-3xl bg-gray-100 dark:bg-slate-700 text-black dark:text-white">
+      <div className="grid gap-10 lg:grid-cols-2 xl:grid-cols-3 rounded-3xl bg-gray-100 dark:bg-slate-800 text-black dark:text-white">
         <div className="lg:col-span-2 xl:col-auto">
           <div className="flex flex-col justify-between w-full h-full px-14 py-14">
             <p className="text-2xl leading-normal ">
