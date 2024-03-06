@@ -16,6 +16,8 @@ export default async function VocabLessons() {
       return redirect("/login");
     }
 
+    
+
 return(
   <main className="w-full">
     <ExitButton />
