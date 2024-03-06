@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { createClient } from "@/utils/supabase/client";
-import Navbar from "./Navbar";
+import Navbar from "./ProfileNavbar";
 
 // Defining the user data interface
 interface UserData {

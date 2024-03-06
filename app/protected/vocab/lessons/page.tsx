@@ -1,4 +1,6 @@
 import ExitButton from "@/components/ProtectedPageComps/ExitButton";
+import TextBoxCORRECT from "@/components/ProtectedPageComps/TextBoxCORRECT";
+import TextBoxWRONG from "@/components/ProtectedPageComps/TextBoxWRONG";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -16,8 +18,10 @@ export default async function VocabLessons() {
     }
 
 return(
-  <main>
+  <main className="w-full">
     <ExitButton />
+    <TextBoxCORRECT />
+    <TextBoxWRONG />
   </main>
 )
 }
