@@ -59,14 +59,27 @@ export default function ProfilePage() {
   }, []);
 
   // Handling form input change for profile fields and settings
-  const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const { name, value, type } = e.target;
+
+  // Check if the input type is checkbox or select
+  const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+
+  // If the input type is select, handle its value
+  if (type === 'select-one') {
+    setUserData({
+      ...userData,
+      [name]: value === "dark", // Convert value to boolean
+    });
+  } else {
+    // For other input types, update as usual
     setUserData({
       ...userData,
       [name]: newValue,
     });
-  };
+  }
+};
+
 
   // Handling form input change for additional profile fields
   const handleAdditionalFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
