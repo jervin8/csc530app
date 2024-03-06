@@ -1,4 +1,5 @@
 import ExitButton from "@/components/ProtectedPageComps/ExitButton";
+import ValidatingTextBox from "@/components/ProtectedPageComps/ValidatingTextBox";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -15,9 +16,12 @@ export default async function VocabLessons() {
       return redirect("/login");
     }
 
+    
+
 return(
-  <main>
+  <main className="w-full">
     <ExitButton />
+    <ValidatingTextBox />
   </main>
 )
 }

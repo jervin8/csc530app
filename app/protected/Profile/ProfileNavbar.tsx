@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default  function Navbar() {
+export default  function ProfileNavbar() {
 
 return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">

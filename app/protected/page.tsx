@@ -28,7 +28,8 @@ return (
   <main className="w-full">
     <Navbar/>
     <div className="h-screen pt-20">
-        <div className="container h-full mx-auto text-white">
+        <div className="container h-full mx-auto  text-gray-900 dark:text-white">
+
             <h1>Vocab</h1>
             <VocabLessonButton />
             <VocabReviewButton />
