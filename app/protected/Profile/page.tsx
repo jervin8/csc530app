@@ -163,19 +163,19 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
           <div className="mb-8">
             <button
               onClick={() => setCurrentView("profile")}
-              className={`py-2 px-4 rounded-md ${currentView === "profile" ? "bg-green-700 text-white" : "bg-gray-300 text-gray-700"} mr-2`}
+              className={`py-2 px-4 rounded-md ${currentView === "profile" ? "bg-green-700 text-gray-700" : "bg-gray-300 text-gray-700"} mr-2`}
             >
               Profile
             </button>
             <button
               onClick={() => setCurrentView("settings")}
-              className={`py-2 px-4 rounded-md ${currentView === "settings" ? "bg-green-700 text-white" : "bg-gray-300 text-gray-700"} mr-2`}
+              className={`py-2 px-4 rounded-md ${currentView === "settings" ? "bg-green-700 text-gray-700" : "bg-gray-300 text-gray-700"} mr-2`}
             >
               Settings
             </button>
             <button
               onClick={() => setCurrentView("password")}
-              className={`py-2 px-4 rounded-md ${currentView === "password" ? "bg-green-700 text-white" : "bg-gray-300 text-gray-700"}`}
+              className={`py-2 px-4 rounded-md ${currentView === "password" ? "bg-green-700 text-gray-700" : "bg-gray-300 text-gray-700"}`}
             >
               Change Password
             </button>
@@ -189,7 +189,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                 name="email"
                 value={userData.email}
                 onChange={handleProfileChange}
-                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
               />
               <label className="block text-gray-700 mb-2">First Name:</label>
               <input
@@ -197,7 +197,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                 name="first_name"
                 value={userData.first_name}
                 onChange={handleProfileChange}
-                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
               />
               <label className="block text-gray-700 mb-2">Last Name:</label>
               <input
@@ -205,7 +205,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                 name="last_name"
                 value={userData.last_name}
                 onChange={handleProfileChange}
-                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
               />
               {/* Additional profile fields */}
               {Object.entries(userData.profile_fields || {}).map(([key, value]) => (
@@ -216,13 +216,13 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                     name={key}
                     value={value}
                     onChange={handleAdditionalFieldChange}
-                    className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+                    className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
                   />
                 </div>
               ))}
               <button
                 type="submit"
-                className="bg-green-700 rounded-md px-4 py-2 text-white mb-2 w-full"
+                className="bg-green-700 rounded-md px-4 py-2 text-black mb-2 w-full "
               >
                 Update Profile
               </button>
@@ -236,7 +236,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                 name="darkMode"
                 value={userData.darkMode ? "dark" : "light"}
                 onChange={handleProfileChange}
-                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
               >
                 <option value="light">Light</option>
                 <option value="dark">Dark</option>
@@ -259,7 +259,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                 value={passwordData.newPassword}
                 onChange={handlePasswordChange}
                 autoComplete="new-password" // Prevent autofilling
-                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500"
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
               />
               <button
                 type="submit"
@@ -273,7 +273,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
           <div className="text-center">
             <button
               onClick={handleSignOut} // Handling sign-out button click
-              className="py-2 px-4 rounded-md bg-gray-700 text-white hover:bg-gray-800"
+              className="py-2 px-4 rounded-md bg-blue-300 text-black hover:bg-gray-800 "
             >
               Logout
             </button>
