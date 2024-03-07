@@ -19,13 +19,20 @@ export default async function VocabReviews() {
     //getting date
     let today = new Date().toISOString().slice(0, 10)
 
-    //gets words that are due for review for the currently logged in user
-    const { data, error } = await supabase.from('UserWords').select('words2ID').eq('userID', user.id).lte('reviewDate', today)
+    //gets wordids that are due for review for the currently logged in user
+    const { data: userwordids, error } = await supabase.from('UserWords').select('words2ID').eq('userID', user.id).lte('reviewDate', today)
+
+    //after this line of code executes, wordIds will be an array containing only the words2ID values extracted from the objects fetched from the 'UserWords' table. /
+    const wordIds = userwordids!.map(userWord => userWord.words2ID);
+
+    ////gets words that are due for review for the currently logged in user
+    const { data: words, error: wordsError } = await supabase.from('Words2').select('Vocab-Japanese').in('Old Opt Sort', wordIds);
 
 return(
   <main>
     <ExitButton />
-    <p>{JSON.stringify(data)}</p>
+    <p>{JSON.stringify(userwordids)}</p>
+    <p>{JSON.stringify(words)}</p>
     <ValidatingTextBox />
   </main>
 )
