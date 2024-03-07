@@ -21,7 +21,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
       }`}
     >
       {pretitle && (
-        <div className="text-sm font-bold tracking-wider text-indigo-600 uppercase">
+        <div className="text-lg font-bold tracking-wider text-indigo-700 dark:text-indigo-500 uppercase">
           {pretitle}
         </div>
       )}
