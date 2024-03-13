@@ -1,6 +1,13 @@
 "use client"
 import { useState } from 'react';
 
+//make it so this function takes an array of words as a parameter and then checks the word using isCorrect and if it is correct update words and bucket/duedate and remove from array of reviews that day
+//if they get it wrong then just update due date to whateve rlower bucket is and shuffle the array indexes and go again but make sure they dont get the same one\
+//make sure if they have alread ygotte nit wrong once that once they get it right and remove it from remove pool it is still counted as wrong on buckets and due dates(all that matters here is the first reponse)
+
+//make it so that when they hit enter the text stays but once they click in the box again and start typing after having already submitted the last response it deletes that text and starts fresh
+
+
 function ValidatingTextBox() {
   const [inputValue, setInputValue] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
