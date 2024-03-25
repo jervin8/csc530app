@@ -1,0 +1,37 @@
+/* App.css */
+
+/* Light mode styles */
+.light {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --button-bg: #4CAF50;
+    --button-text: #ffffff;
+  }
+  
+  /* Dark mode styles */
+  .dark {
+    --bg-color: #202124;
+    --text-color: #ffffff;
+    --button-bg: #212121;
+    --button-text: #ffffff;
+  }
+  
+  /* Common styles */
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+  
+  button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
