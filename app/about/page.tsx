@@ -1,16 +1,14 @@
 import Navbar from "@/components/Navbar";
-import Image from 'next/image';
-import AboutBackground from "@/app/public/img/about_background.png";
 import SectionTitle from "@/components/LandingPageComps/SectionTitle";
 import Footer from "@/components/Footer";
 
 export default function About() {
   return (
-    <main className="h-full w-full bg-gray-100 dark:bg-slate-700 text-black dark:text-white">
+    <div className="h-full w-full bg-gray-100 dark:bg-slate-700 text-black dark:text-white">
         <Navbar />
         <div className="h-screen">
-          <div>
-              <Image src={AboutBackground} alt="About Us" layout="responsive"/>
+          <div className="bg-slate-800 text-white py-4">
+              <h1 className="text-center text-6xl font-bold">About Us</h1>
           </div>
 
           <div className="relative">
@@ -28,6 +26,6 @@ export default function About() {
           
         </div>
         <Footer/>
-    </main>
+    </div>
   );
 }
