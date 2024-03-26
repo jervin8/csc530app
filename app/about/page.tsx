@@ -7,8 +7,8 @@ export default function About() {
     <div className="h-full w-full bg-gray-100 dark:bg-slate-700 text-black dark:text-white">
         <Navbar />
         <div className="h-screen">
-          <div className="bg-slate-800 text-white py-4">
-              <h1 className="text-center text-6xl font-bold">About Us</h1>
+          <div className="bg-slate-800 text-white py-12">
+              <h1 className="text-center text-7xl font-bold">About Us</h1>
           </div>
 
           <div className="relative">
