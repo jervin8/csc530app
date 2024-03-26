@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 
 export default function Contact() {
     return (
-        <main className="bg-gray-100 dark:bg-slate-700 text-black dark:text-white min-h-screen w-full">
+        <main className="bg-gray-200 dark:bg-slate-700 text-black dark:text-white min-h-screen w-full">
             <title>Contact Us</title>
             <Navbar />
             <div className="min-h-screen">
