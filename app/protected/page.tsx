@@ -7,6 +7,7 @@ import KanjiReviewButton from "@/components/ProtectedPageComps/KanjiReviewButton
 import VocabReviewButton from "@/components/ProtectedPageComps/VocabReviewButton";
 import VocabLessonButton from "@/components/ProtectedPageComps/VocabLessonButton";
 import KanjiLessonButton from "@/components/ProtectedPageComps/KanjiLessonButton";
+import WordCountGraph from "@/components/ProtectedPageComps/WordCountGraph";
 
 
 export default async function Dashboard() {
@@ -36,9 +37,15 @@ return (
             <h1>Kanji</h1>
             <KanjiLessonButton />
             <KanjiReviewButton />
+            <WordCountGraph />
         </div>
-    </div>
+       
+          
+
+        
+        
     <Footer />
+    </div>
   </main>
 )
 }
