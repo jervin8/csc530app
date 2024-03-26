@@ -23,7 +23,7 @@ export default function Landing() {
       </SectionTitle>
       <Video />
       */}
-      <SectionTitle pretitle="Testimonials" title="Here's what our customers said">
+      <SectionTitle pretitle="Don't just take our word for it" title="Here's what our customers said">
         These are a.i. generated
       </SectionTitle>
       <Testimonials />
