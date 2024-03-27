@@ -1,5 +1,4 @@
 import ExitButton from "@/components/ProtectedPageComps/ExitButton";
-import ValidatingTextBox from "@/components/ProtectedPageComps/ValidatingTextBox";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -28,12 +27,16 @@ export default async function VocabReviews() {
     ////gets words that are due for review for the currently logged in user
     const { data: words, error: wordsError } = await supabase.from('Words2').select('Vocab-Japanese').in('Old Opt Sort', wordIds);
 
+    // Mapping the fetched words into an array
+    const wordValues = words!.map((word: any) => word['Vocab-Japanese']);
+
+
 return(
   <main>
     <ExitButton />
-    <p>{JSON.stringify(userwordids)}</p>
-    <p>{JSON.stringify(words)}</p>
-    <ValidatingTextBox />
+
+    <p>{JSON.stringify(wordValues)}</p>
+    
   </main>
 )
 }
