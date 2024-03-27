@@ -1,7 +1,8 @@
 import ExitButton from "@/components/ProtectedPageComps/ExitButton";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-
+import ValidatingTextBox from "@/components/ProtectedPageComps/ValidatingTextBox";
+import WordGame from "@/components/ProtectedPageComps/WordGame";
 
 export default async function VocabReviews() {
     const supabase = createClient();
@@ -27,8 +28,14 @@ export default async function VocabReviews() {
     ////gets words that are due for review for the currently logged in user
     const { data: words, error: wordsError } = await supabase.from('Words2').select('Vocab-Japanese').in('Old Opt Sort', wordIds);
 
-    // Mapping the fetched words into an array
+    // Mapping the fetched japanese words to be displayed into an array
     const wordValues = words!.map((word: any) => word['Vocab-Japanese']);
+
+    //gets english word equivalent to the japanese word
+    const { data: engword, error: endwordError } = await supabase.from('Words2').select('Vocab-English').in('Old Opt Sort', wordIds);
+
+    //maps the fetched english words into array
+    const engwordarr = engword!.map((word: any) => word['Vocab-English']);
 
 
 return(
@@ -36,7 +43,10 @@ return(
     <ExitButton />
 
     <p>{JSON.stringify(wordValues)}</p>
-    
+    <p>{JSON.stringify(engwordarr)}</p>
+
+    <WordGame words={["bob", "joe", "john", "jeb"]} />
+
   </main>
 )
 }
