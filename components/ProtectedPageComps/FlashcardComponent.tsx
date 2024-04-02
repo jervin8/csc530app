@@ -9,37 +9,40 @@ const FlashcardComponent: React.FC<Props> = ({ words }) => {
   const [inputValue, setInputValue] = useState('');
   const [completedWords, setCompletedWords] = useState<string[]>([]);
   const [remainingWords, setRemainingWords] = useState<string[]>(words);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
 
-  // Derive current word from remaining words
-  const currentWord = remainingWords.length > 0 ? remainingWords[0] : '';
+  const currentWord = remainingWords[currentWordIndex % remainingWords.length];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
-    setIsIncorrect(false); // Reset incorrect message on input change
+    setIsIncorrect(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      if (inputValue.trim() === currentWord) {
+      const isCorrect = inputValue.trim() === currentWord;
+      if (isCorrect) {
         setCompletedWords([...completedWords, currentWord]);
-        const newWords = remainingWords.slice(1);
-        setRemainingWords(newWords); // Update the remaining words
+        const newWords = remainingWords.filter((_, index) => index !== currentWordIndex);
+        setRemainingWords(newWords);
         setInputValue('');
       } else {
-        // If the input is incorrect, show incorrect message
         setIsIncorrect(true);
+        const movedWord = remainingWords[currentWordIndex % remainingWords.length];
+        const newWords = remainingWords.filter(word => word !== movedWord);
+        setRemainingWords([...newWords, movedWord]);
         setInputValue('');
       }
+      setCurrentWordIndex(currentWordIndex + 1); // Move to the next word regardless of correctness
     }
   };
 
   useEffect(() => {
     if (completedWords.length === words.length) {
-      // If all words are completed, redirect to the '/protected' page
       setTimeout(() => {
         window.location.href = '/protected';
-      }, 2000); // Redirect after 2 seconds
+      }, 2000);
     }
   }, [completedWords, words]);
 
