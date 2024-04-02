@@ -6,34 +6,33 @@ interface Props {
 }
 
 const FlashcardComponent: React.FC<Props> = ({ words }) => {
-  const [wordIndex, setWordIndex] = useState(0);
-  const [currentWord, setCurrentWord] = useState(words[wordIndex]);
   const [inputValue, setInputValue] = useState('');
   const [completedWords, setCompletedWords] = useState<string[]>([]);
+  const [remainingWords, setRemainingWords] = useState<string[]>(words);
+  const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
+
+  // Derive current word from remaining words
+  const currentWord = remainingWords.length > 0 ? remainingWords[0] : '';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+    setIsIncorrect(false); // Reset incorrect message on input change
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (inputValue.trim() === currentWord) {
         setCompletedWords([...completedWords, currentWord]);
-        if (wordIndex + 1 < words.length) {
-          setWordIndex(wordIndex + 1);
-          setInputValue('');
-          setCurrentWord(words[wordIndex + 1]);
-        }
-      } else {
+        const newWords = remainingWords.slice(1);
+        setRemainingWords(newWords); // Update the remaining words
         setInputValue('');
-        const updatedWords = [...words.slice(1), currentWord]; // Move incorrect word to the end
-        setCurrentWord(updatedWords[0]); // Set current word to the first word in the updated array
+      } else {
+        // If the input is incorrect, show incorrect message
+        setIsIncorrect(true);
+        setInputValue('');
       }
     }
   };
-  
-  
-  
 
   useEffect(() => {
     if (completedWords.length === words.length) {
@@ -47,9 +46,13 @@ const FlashcardComponent: React.FC<Props> = ({ words }) => {
   return (
     <div>
       <h2>Flashcard</h2>
-      {words.length > 0 && (
+      <div>
+        <p>Remaining Words Array: {JSON.stringify(remainingWords)}</p>
+      </div>
+      {remainingWords.length > 0 && (
         <div>
           <p>Type the word: {currentWord}</p>
+          {isIncorrect && <p style={{ color: 'red' }}>Incorrect! Please try again.</p>}
           <input
             type="text"
             className='text-black'
