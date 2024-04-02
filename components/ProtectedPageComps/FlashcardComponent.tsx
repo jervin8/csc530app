@@ -24,7 +24,7 @@ const FlashcardComponent: React.FC<Props> = ({ words }) => {
       const isCorrect = inputValue.trim() === currentWord;
       if (isCorrect) {
         setCompletedWords([...completedWords, currentWord]);
-        const newWords = remainingWords.filter((_, index) => index !== currentWordIndex);
+        const newWords = remainingWords.filter(word => word !== currentWord);
         setRemainingWords(newWords);
         setInputValue('');
       } else {
