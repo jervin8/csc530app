@@ -2,7 +2,8 @@ import ExitButton from "@/components/ProtectedPageComps/ExitButton";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ValidatingTextBox from "@/components/ProtectedPageComps/ValidatingTextBox";
-import WordGame from "@/components/ProtectedPageComps/WordGame";
+import WordGame from "@/components/ProtectedPageComps/FlashcardComponent";
+import FlashcardComponent from "@/components/ProtectedPageComps/FlashcardComponent";
 
 export default async function VocabReviews() {
     const supabase = createClient();
@@ -45,7 +46,7 @@ return(
     <p>{JSON.stringify(wordValues)}</p>
     <p>{JSON.stringify(engwordarr)}</p>
 
-    <WordGame words={["bob", "joe", "john", "jeb"]} />
+    <FlashcardComponent words={engwordarr} />
 
   </main>
 )
