@@ -42,6 +42,7 @@ const FlashcardComponent: React.FC<Props> = ({ words }) => {
         setMissedWords([...missedWords, currentWord]);
         const newWords = remainingWords.filter(word => word !== currentWord);
         setRemainingWords([...newWords, currentWord]);
+        setInputValue('');
       }
       setCurrentWordIndex(currentWordIndex + 1); // Move to the next word regardless of correctness
     }
