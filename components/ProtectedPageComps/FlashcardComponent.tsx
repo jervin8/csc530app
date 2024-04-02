@@ -10,28 +10,27 @@ const FlashcardComponent: React.FC<Props> = ({ words }) => {
   const [completedWords, setCompletedWords] = useState<string[]>([]);
   const [remainingWords, setRemainingWords] = useState<string[]>(words);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
 
   const currentWord = remainingWords[currentWordIndex % remainingWords.length];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+    setIsCorrect(false);
     setIsIncorrect(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      const isCorrect = inputValue.trim() === currentWord;
-      if (isCorrect) {
+    if (e.key === 'Enter' && inputValue.trim() !== '') {
+      if (inputValue.trim() === currentWord) {
         setCompletedWords([...completedWords, currentWord]);
         const newWords = remainingWords.filter(word => word !== currentWord);
         setRemainingWords(newWords);
         setInputValue('');
+        setIsCorrect(true);
       } else {
         setIsIncorrect(true);
-        const movedWord = remainingWords[currentWordIndex % remainingWords.length];
-        const newWords = remainingWords.filter(word => word !== movedWord);
-        setRemainingWords([...newWords, movedWord]);
         setInputValue('');
       }
       setCurrentWordIndex(currentWordIndex + 1); // Move to the next word regardless of correctness
@@ -55,6 +54,7 @@ const FlashcardComponent: React.FC<Props> = ({ words }) => {
       {remainingWords.length > 0 && (
         <div>
           <p>Type the word: {currentWord}</p>
+          {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
           {isIncorrect && <p style={{ color: 'red' }}>Incorrect! Please try again.</p>}
           <input
             type="text"
