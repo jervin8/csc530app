@@ -9,9 +9,17 @@ const FlashcardComponent: React.FC<Props> = ({ words }) => {
   const [inputValue, setInputValue] = useState('');
   const [completedWords, setCompletedWords] = useState<string[]>([]);
   const [remainingWords, setRemainingWords] = useState<string[]>(words);
+  const [missedWords, setMissedWords] = useState<string[]>([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Set the current word to the first word in the remainingWords array
+    if (remainingWords.length > 0) {
+      setCurrentWordIndex(0);
+    }
+  }, [remainingWords]);
 
   const currentWord = remainingWords[currentWordIndex % remainingWords.length];
 
@@ -31,11 +39,20 @@ const FlashcardComponent: React.FC<Props> = ({ words }) => {
         setIsCorrect(true);
       } else {
         setIsIncorrect(true);
-        setInputValue('');
+        setMissedWords([...missedWords, currentWord]);
+        const newWords = remainingWords.filter(word => word !== currentWord);
+        setRemainingWords([...newWords, currentWord]);
       }
       setCurrentWordIndex(currentWordIndex + 1); // Move to the next word regardless of correctness
     }
   };
+
+  useEffect(() => {
+    if (remainingWords.length === 0 && missedWords.length > 0) {
+      setRemainingWords([...missedWords]);
+      setMissedWords([]);
+    }
+  }, [remainingWords, missedWords]);
 
   useEffect(() => {
     if (completedWords.length === words.length) {
@@ -49,7 +66,7 @@ const FlashcardComponent: React.FC<Props> = ({ words }) => {
     <div>
       <h2>Flashcard</h2>
       <div>
-        <p>Remaining Words Array: {JSON.stringify(remainingWords)}</p>
+        
       </div>
       {remainingWords.length > 0 && (
         <div>
