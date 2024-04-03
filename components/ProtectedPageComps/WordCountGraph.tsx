@@ -82,7 +82,7 @@ const WordCountGraph = () => {
 
   return (
     <div> {/* Adjust container dimensions as needed */}
-      <h2>Knowledge Check</h2>
+      <h2 className="text-center">Knowledge Check</h2>
       <canvas id="wordCountChart"></canvas>
     </div>
   );
