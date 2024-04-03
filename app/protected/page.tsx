@@ -26,24 +26,21 @@ export default async function Dashboard() {
   const { data: Users } = await supabase.from("Users").select();
 
 return (
-  <main className="w-full">
+  <main className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
     <Navbar/>
-    <div className="h-screen pt-20">
-        <div className="container h-full mx-auto  text-gray-900 dark:text-white">
-
+    <div className="pt-20">
+        <div className="h-screen container mx-auto ">
             <h1>Vocab</h1>
             <VocabLessonButton />
             <VocabReviewButton />
             <h1>Kanji</h1>
             <KanjiLessonButton />
             <KanjiReviewButton />
+            <div className=" bg-white">
             <WordCountGraph />
+            </div>
         </div>
        
-          
-
-        
-        
     <Footer />
     </div>
   </main>

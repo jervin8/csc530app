@@ -155,9 +155,9 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
   };
   // Rendering the profile page content
   return (
-    <main className="h-screen w-full">
+    <main className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
       <Navbar/>
-      <div className="h-screen flex justify-center items-center bg-gray-100">
+      <div className="h-screen flex justify-center items-center">
         <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
           {/* Switching between profile, settings, and password */}
           <div className="mb-8">
