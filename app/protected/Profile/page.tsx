@@ -168,12 +168,6 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
               Profile
             </button>
             <button
-              onClick={() => setCurrentView("settings")}
-              className={`py-2 px-4 rounded-md ${currentView === "settings" ? "bg-green-700 text-gray-700" : "bg-gray-300 text-gray-700"} mr-2`}
-            >
-              Settings
-            </button>
-            <button
               onClick={() => setCurrentView("password")}
               className={`py-2 px-4 rounded-md ${currentView === "password" ? "bg-green-700 text-gray-700" : "bg-gray-300 text-gray-700"}`}
             >
@@ -228,27 +222,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
               </button>
             </form>
           )}
-           {/* Settings form */}
-           {currentView === "settings" && (
-            <form onSubmit={handleUpdate} className="mb-8">
-              <label className="block text-gray-700 mb-2">Website appearance:</label>
-              <select
-                name="darkMode"
-                value={userData.darkMode ? "dark" : "light"}
-                onChange={handleProfileChange}
-                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
-              >
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-              </select>
-              <button
-                type="submit"
-                className="bg-green-700 rounded-md px-4 py-2 text-white mb-2 w-full"
-              >
-                Save Settings
-              </button>
-            </form>
-          )}
+          
            {/* Form for changing password */}
            {currentView === "password" && (
             <form onSubmit={handlePasswordUpdate} className="mb-8">
