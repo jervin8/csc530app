@@ -6,6 +6,7 @@ const DictionaryPage = () => {
   const [searchWord, setSearchWord] = useState('');
   const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
   const [wordInfo, setWordInfo] = useState<any>(null);
+  const [numWordsFetched, setNumWordsFetched] = useState<number>(0);
   const supabase = createClient();
 
   useEffect(() => {
@@ -16,27 +17,41 @@ const DictionaryPage = () => {
         let { data: words, error } = await supabase
           .from('Words2')
           .select('Vocab-English')
-          .order('Old Opt Sort', { ascending: true }) // Order by 'Old Opt Sort' column
-          .range(0, 9000);
+          .order('Old Opt Sort', { ascending: true })
+          .range(0, 1000); // Fetch the first 1000 words
 
-        while (words && words.length > 0) {
-          allWords = allWords.concat(words.map((word: any) => word['Vocab-English']));
-
-          // Provide a type assertion here
-          const lastWordSort = words.length > 0 ? (words[words.length - 1] as any)['Old Opt Sort'] : null;
-
-          ({ data: words, error } = await supabase
-            .from('Words2')
-            .select('Vocab-English')
-            .order('Old Opt Sort', { ascending: true }) // Order by 'Old Opt Sort' column
-            .gt('Old Opt Sort', lastWordSort) // Greater than 'Old Opt Sort' of last fetched word
-            .range(0, 100)); // Next range
+        if (error) {
+          throw error;
         }
 
-        setWordSuggestions(allWords);
+        if (words && words.length > 0) {
+          allWords = words.map((word: any) => word['Vocab-English']);
+          setWordSuggestions(allWords);
+          setNumWordsFetched(allWords.length);
+        }
+
+        // Fetch the next batches of 1000 words until reaching 9567
+        let offset = 1000;
+        while (allWords.length < 9567) {
+          const { data: nextWords } = await supabase
+            .from('Words2')
+            .select('Vocab-English')
+            .order('Old Opt Sort', { ascending: true })
+            .range(offset, offset + 1000);
+
+          if (nextWords && nextWords.length > 0) {
+            allWords = allWords.concat(nextWords.map((word: any) => word['Vocab-English']));
+            setWordSuggestions(allWords);
+            setNumWordsFetched(allWords.length);
+            offset += 1000;
+          } else {
+            break;
+          }
+        }
       } catch (error) {
         console.error('Error fetching word suggestions:', error);
         setWordSuggestions([]);
+        setNumWordsFetched(0);
       }
     };
 
@@ -74,6 +89,7 @@ const DictionaryPage = () => {
 
   return (
     <div>
+      <p>Number of words fetched for suggestions: {numWordsFetched}</p>
       <input
         type="text"
         value={searchWord}
