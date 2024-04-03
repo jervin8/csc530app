@@ -36,7 +36,7 @@ return (
             <h1>Kanji</h1>
             <KanjiLessonButton />
             <KanjiReviewButton />
-            <div className=" bg-white">
+            <div className=" bg-white text-black w-1/2">
             <WordCountGraph />
             </div>
         </div>

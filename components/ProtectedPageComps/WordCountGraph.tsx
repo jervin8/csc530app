@@ -81,8 +81,8 @@ const WordCountGraph = () => {
   }, [wordCounts]);
 
   return (
-    <div style={{ width: '600px', height: '400px' }}> {/* Adjust container dimensions as needed */}
-      <h2>Words you Know </h2>
+    <div> {/* Adjust container dimensions as needed */}
+      <h2>Knowledge Check</h2>
       <canvas id="wordCountChart"></canvas>
     </div>
   );
