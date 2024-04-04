@@ -91,6 +91,7 @@ const DictionaryPage = () => {
     <div>
       <p>Number of words fetched for suggestions: {numWordsFetched}</p>
       <input
+        className='text-black'
         type="text"
         value={searchWord}
         onChange={(e) => setSearchWord(e.target.value)}
@@ -107,7 +108,7 @@ const DictionaryPage = () => {
         <div>
           <h2>{searchWord}</h2>
           <p>Japanese Equivalent: {wordInfo['Vocab-Japanese']}</p>
-          <p>Part of Speech: {wordInfo['Part-of-Speech']}</p>
+          <p>Part of Speech: {wordInfo['Part of Speech']}</p>
           <p>Sentence-Japanese: {wordInfo['Sentence-Japanese']}</p>
           <p>Sentence-English: {wordInfo['Sentence-English']}</p>
           <p>Vocab-Furigana: {wordInfo['Vocab-Furigana']}</p>

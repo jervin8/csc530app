@@ -1,11 +1,12 @@
 "use client"
+import { createClient } from '@/utils/supabase/client';
 import React, { useState, useEffect } from 'react';
 
 interface Props {
   words: string[];
 }
 
-const FlashcardComponent: React.FC<Props> = ({ words }) => {
+const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   const [inputValue, setInputValue] = useState('');
   const [completedWords, setCompletedWords] = useState<string[]>([]);
   const [remainingWords, setRemainingWords] = useState<string[]>(words);
@@ -14,6 +15,8 @@ const FlashcardComponent: React.FC<Props> = ({ words }) => {
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
 
+  const supabase = createClient();
+    
   useEffect(() => {
     // Set the current word to the first word in the remainingWords array
     if (remainingWords.length > 0) {
