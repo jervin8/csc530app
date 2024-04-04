@@ -91,6 +91,7 @@ const DictionaryPage = () => {
     <div>
       <p>Number of words fetched for suggestions: {numWordsFetched}</p>
       <input
+        className='text-black'
         type="text"
         value={searchWord}
         onChange={(e) => setSearchWord(e.target.value)}
