@@ -27,13 +27,13 @@ export default async function VocabReviews() {
     const wordIds = userwordids!.map(userWord => userWord.words2ID);
 
     ////gets words that are due for review for the currently logged in user
-    const { data: words, error: wordsError } = await supabase.from('Words2').select('Vocab-Japanese').in('Old Opt Sort', wordIds);
+    const { data: words, error: wordsError } = await supabase.from('Words2').select('Vocab-Japanese').in('id', wordIds);
 
     // Mapping the fetched japanese words to be displayed into an array
     const wordValues = words!.map((word: any) => word['Vocab-Japanese']);
 
     //gets english word equivalent to the japanese word
-    const { data: engword, error: endwordError } = await supabase.from('Words2').select('Vocab-English').in('Old Opt Sort', wordIds);
+    const { data: engword, error: endwordError } = await supabase.from('Words2').select('Vocab-English').in('id', wordIds);
 
     //maps the fetched english words into array
     const engwordarr = engword!.map((word: any) => word['Vocab-English']);
