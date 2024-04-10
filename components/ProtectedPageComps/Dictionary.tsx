@@ -131,11 +131,11 @@ const DictionaryPage = () => {
         </datalist>
         <button onClick={handleSearch} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-xl">Search</button>
       </div>
-        {wordInfo && searchWord.trim() !== '' && (  // Check if wordInfo is not null and searchWord is not empty
+        {wordInfo && wordInfo['Vocab-English'].trim() !== '' && (  // Check if wordInfo is not null and searchWord is not empty
         <div className="bg-white text-black mt-5 p-10 rounded-lg">
             <div className="text-2xl">
               <div className="text-4xl">
-                {searchWord.charAt(0).toUpperCase() + searchWord.slice(1)}
+                {wordInfo['Vocab-English'].charAt(0).toUpperCase() + wordInfo['Vocab-English'].slice(1)}
               </div>
               <hr className="my-2 border-black"></hr>
               <div className="flex items-center">Kanji Composition:<div className=" ml-4 text-4xl">{wordInfo['Vocab-Japanese']}</div></div>
