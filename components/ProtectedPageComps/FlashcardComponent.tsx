@@ -56,19 +56,29 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
       //gett bucket value for current word
       const { data: currentbucket } = await supabase.from('UserWords').select('bucket').eq('id', userwordid)
-
+      
 
 //----------------------------------------------------ERROR NUMBUCKET AND FIRSTTIME DATA CASTING WONT WORK : need to find way to parse the json that it get sent to me in
-      //make number variable for bucket value
-      let numbucket = Number(currentbucket);
+      //make int holding json currentbucket
+      let stringnumbucket = JSON.stringify(currentbucket);
+      let numbucketobj = JSON.parse(stringnumbucket);
+      let numbucket = Number(!numbucketobj.bucket);
 
-      //getting first time boolean
+
+      //getting first time int ( 0 or 1 )
       const { data: firsttime } = await supabase.from('UserWords').select('First_Time').eq('id', userwordid)
+
+      //make int holding firsttime int
+      let stringfirsttime = JSON.stringify(firsttime);
+      let firsttimeobj = JSON.parse(stringfirsttime);
+      let newfirsttime = Number(!firsttimeobj.First_Time);
+
+      
 
 //if correct
       if (inputValue.trim() === currentWord) {
 
-        if(Number(firsttime) == 1){
+        if(newfirsttime == 1){
 
           //raise bucket value by 1 if bucket is less than 15
           if(numbucket<10){
@@ -127,7 +137,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
 //if wrong
       } else {
-        if(Number(firsttime) == 1){
+        if(newfirsttime == 1){
 
           //lower bucket value by 1 if bucket is greater than 1 and less than 5
           if(numbucket>1 && numbucket<5){
