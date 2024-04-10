@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
 
 const DictionaryPage = () => {
-  const [searchWord, setSearchWord] = useState('');
+  const [searchWord, setSearchWord] = useState('dictionary, encyclopedia');
   const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
   const [wordInfo, setWordInfo] = useState<any>(null);
   const [numWordsFetched, setNumWordsFetched] = useState<number>(0);
@@ -55,7 +55,32 @@ const DictionaryPage = () => {
       }
     };
 
+    {/*I couldn't get the text box to not render so now it automatically renders dictionary, encyclopedia on page start up*/}
+    const fetchInitialWordInfo = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('Words2')
+          .select('*')
+          .eq('Vocab-English', searchWord.toLowerCase())
+          .single();
+
+        if (error) {
+          console.error('Error fetching word information:', error);
+          setWordInfo(null);
+        } else if (data) {
+          setWordInfo(data);
+        } else {
+          console.error('Word not found');
+          setWordInfo(null);
+        }
+      } catch (error) {
+        console.error('Error fetching word information:', error);
+        setWordInfo(null);
+      }
+    };
+
     fetchWordSuggestions();
+    fetchInitialWordInfo();
   }, []);
 
   const handleSearch = async () => {
@@ -64,7 +89,7 @@ const DictionaryPage = () => {
         .from('Words2')
         .select('*')
         .eq('Vocab-English', searchWord.toLowerCase())
-        .single();
+        .single()
 
       if (error) {
         console.error('Error fetching word information:', error);
@@ -89,7 +114,7 @@ const DictionaryPage = () => {
 
   return (
     <div className="">
-      <p>Number of words fetched for suggestions: {numWordsFetched}</p>
+      <div className="text-lg text-black dark:text-white">Number of words fetched for suggestions: {numWordsFetched}</div>
       <div className="flex items-center mt-5">
         <input
           className='text-black w-full mr-2 py-2 px-4 border border-gray-300 rounded-lg'
@@ -104,17 +129,20 @@ const DictionaryPage = () => {
             <option key={index} value={word} />
           ))}
         </datalist>
-        <button onClick={handleSearch} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg">Search</button>
+        <button onClick={handleSearch} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-xl">Search</button>
       </div>
-      <div className="bg-white mt-5 p-10 rounded-lg">
-        {wordInfo && (
-          <div>
-            <div className="text-4xl">{searchWord.charAt(0).toUpperCase()+searchWord.slice(1)}</div>
-            <div>Kanji Composition: {wordInfo['Vocab-Japanese']}</div>
-            <div>Part of Speech: {wordInfo['Part of Speech']}</div>
-            <div>Sentence-Japanese: {wordInfo['Sentence-Japanese']}</div>
-            <div>Sentence-English: {wordInfo['Sentence-English']}</div>
-            <div>Vocab-Furigana: {wordInfo['Vocab-Furigana']}</div>
+      <div className="bg-white text-black mt-5 p-10 rounded-lg">
+        {wordInfo && searchWord.trim() !== '' && (  // Check if wordInfo is not null and searchWord is not empty
+          <div className="text-2xl">
+            <div className="text-4xl">
+              {searchWord.charAt(0).toUpperCase() + searchWord.slice(1)}
+            </div>
+            <hr className="my-2 border-black"></hr>
+            <div className="flex items-center">Kanji Composition:<div className=" ml-4 text-4xl">{wordInfo['Vocab-Japanese']}</div></div>
+            <div className="flex items-center">Part of Speech: <div className=" ml-4 text-3xl">{wordInfo['Part of Speech'].charAt(0).toUpperCase() + wordInfo['Part of Speech'].slice(1)}</div></div>
+            <div className="flex items-center">Sentence-Japanese: <div className=" ml-4 text-3xl">{wordInfo['Sentence-Japanese']}</div></div>
+            <div className="flex items-center">Sentence-English: <div className=" ml-4 text-3xl">{wordInfo['Sentence-English']}</div></div>
+            <div className="flex items-center">Vocab-Furigana:  <div className=" ml-4 text-3xl">{wordInfo['Vocab-Furigana']}</div></div>
           </div>
         )}
       </div>
