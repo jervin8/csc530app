@@ -162,13 +162,13 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
           <div className="mb-8">
             <button
               onClick={() => setCurrentView("profile")}
-              className={`py-2 px-4 rounded-md ${currentView === "profile" ? "bg-green-700 text-gray-700" : "bg-gray-300 text-gray-700"} mr-2`}
+              className={`py-2 px-4 rounded-md ${currentView === "profile" ? "bg-indigo-600 text-black" : "bg-gray-300 text-black"} mr-2`}
             >
               Profile
             </button>
             <button
               onClick={() => setCurrentView("password")}
-              className={`py-2 px-4 rounded-md ${currentView === "password" ? "bg-green-700 text-gray-700" : "bg-gray-300 text-gray-700"}`}
+              className={`py-2 px-4 rounded-md ${currentView === "password" ? "bg-indigo-600 text-gray-700" : "bg-gray-300 text-gray-700"}`}
             >
               Change Password
             </button>
@@ -182,7 +182,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                 name="email"
                 value={userData.email}
                 onChange={handleProfileChange}
-                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-indigo-500 text-black"
               />
               <label className="block text-gray-700 mb-2">First Name:</label>
               <input
@@ -190,7 +190,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                 name="first_name"
                 value={userData.first_name}
                 onChange={handleProfileChange}
-                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-indigo-500 text-black"
               />
               <label className="block text-gray-700 mb-2">Last Name:</label>
               <input
@@ -198,7 +198,7 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                 name="last_name"
                 value={userData.last_name}
                 onChange={handleProfileChange}
-                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-indigo-500 text-black"
               />
               {/* Additional profile fields */}
               {Object.entries(userData.profile_fields || {}).map(([key, value]) => (
@@ -209,19 +209,19 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                     name={key}
                     value={value}
                     onChange={handleAdditionalFieldChange}
-                    className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
+                    className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-indigo-500 text-black"
                   />
                 </div>
               ))}
               <button
                 type="submit"
-                className="bg-green-700 rounded-md px-4 py-2 text-black mb-2 w-full "
+                className="bg-indigo-600 rounded-md px-4 py-2 text-black mb-2 w-full "
               >
                 Update Profile
               </button>
             </form>
           )}
-          
+
            {/* Form for changing password */}
            {currentView === "password" && (
             <form onSubmit={handlePasswordUpdate} className="mb-8">
@@ -232,11 +232,11 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
                 value={passwordData.newPassword}
                 onChange={handlePasswordChange}
                 autoComplete="new-password" // Prevent autofilling
-                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-green-500 text-black"
+                className="rounded-md px-4 py-2 bg-gray-200 border border-gray-300 mb-4 w-full focus:outline-none focus:border-indigo-500 text-black"
               />
               <button
                 type="submit"
-                className="bg-green-700 rounded-md px-4 py-2 text-white mb-2 w-full"
+                className="bg-indigo-600 rounded-md px-4 py-2 text-white mb-2 w-full"
               >
                 Update Password
               </button>
@@ -251,7 +251,6 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
               Logout
             </button>
           </div>
-         
           {/* Notification */}
           {notification && (
             <div className={`absolute bottom-4 right-4 bg-${notification.type === "success" ? "green" : "red"}-500 text-white p-4 rounded-md`}>
@@ -262,7 +261,6 @@ const handleProfileChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement
         </div>
       </div>
     </main>
-    
   );
 }
 
