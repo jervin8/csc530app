@@ -52,49 +52,52 @@ export default function Login({
   };
 
   return (
+
     <div className="h-screen flex items-center justify-center w-full gap-2 bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
       
 
-      <form className="animate-in flex-1 flex flex-col max-w-md justify-center gap-2 text-foreground">
-        <label className="text-md" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6 bg-white text-gray-600"
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
-        <label className="text-md" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6 bg-white text-gray-600"
-          type="password"
-          name="password"
-          placeholder="•••••••••••••"
-          required
-        />
-        <SubmitButton
-          formAction={signIn}
-          className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
-          pendingText="Signing In..."
-        >
-          Sign In
-        </SubmitButton>
-        <SubmitButton
-          formAction={signUp}
-          className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
-          pendingText="Signing Up..."
-        >
-          Sign Up
-        </SubmitButton>
-        {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-            {searchParams.message}
-          </p>
-        )}
-      </form>
+
+        <form className="animate-in flex-1 flex flex-col max-w-md justify-center gap-2 text-foreground">
+          <label className="text-md text-black" htmlFor="email">
+            Email
+          </label>
+          <input
+            className="rounded-md px-4 py-2 border mb-6 bg-gray-200 text-gray-700"
+            name="email"
+            placeholder="you@example.com"
+            required
+          />
+          <label className="text-md text-black" htmlFor="password">
+            Password
+          </label>
+          <input
+            className="rounded-md px-4 py-2 border mb-6 bg-gray-200 text-gray-700"
+            type="password"
+            name="password"
+            placeholder="•••••••••••••"
+            required
+          />
+          <SubmitButton
+            formAction={signIn}
+            className="bg-indigo-600 rounded-md px-4 py-2 text-foreground mb-2"
+            pendingText="Signing In..."
+          >
+            Sign In
+          </SubmitButton>
+          <SubmitButton
+            formAction={signUp}
+            className="bg-indigo-600 border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
+            pendingText="Signing Up..."
+          >
+            Sign Up
+          </SubmitButton>
+          {searchParams?.message && (
+            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+              {searchParams.message}
+            </p>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

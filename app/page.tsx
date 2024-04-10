@@ -11,7 +11,7 @@ export default function Landing() {
       <Navbar />
       <PrimarySection />
       <SectionTitle pretitle="Space Repetition Benefits" title=" Why should you learn through space repitition">
-        Space repetition is a learning technique that involves reviewing information at increasing intervals over time. 
+        Space repetition is a learning technique that involves reviewing information at increasing intervals over time.
         It offers several benefits for language learning:
         Improved Retention, Efficiency, Time Management, Long-Term Recall, and Adaptability
       </SectionTitle>

@@ -23,7 +23,7 @@ export default async function Dashboard() {
   const { data: Users } = await supabase.from("Users").select();
 
 return (
-  <main className="w-full">
+  <main className="w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
     <Navbar/>
     <div className="h-screen pt-20">
         <div className="container h-full mx-auto  text-gray-900 dark:text-white">
