@@ -23,6 +23,7 @@ return (
 
     <div className="pt-20">    
          <ProfilePage/>
+         </div>
     <Footer />
   </main>
 )
