@@ -39,7 +39,7 @@ const WordCountGraph = () => {
       const newCounts = new Array(5).fill(0);
       data.forEach(({ [columnName]: bucket }: { [columnName]: number }) => {
         // Map bucket values 1-15 to 1-5
-        const mappedBucket = Math.ceil(bucket / 3);
+        const mappedBucket = Math.ceil(bucket / 2);
         if (mappedBucket >= 1 && mappedBucket <= 5) {
           newCounts[mappedBucket - 1]++;
         }

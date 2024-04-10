@@ -17,7 +17,7 @@ const DictionaryPage = () => {
         let { data: words, error } = await supabase
           .from('Words2')
           .select('Vocab-English')
-          .order('Old Opt Sort', { ascending: true })
+          .order('id', { ascending: true })
           .range(0, 1000); // Fetch the first 1000 words
 
         if (error) {
@@ -36,7 +36,7 @@ const DictionaryPage = () => {
           const { data: nextWords } = await supabase
             .from('Words2')
             .select('Vocab-English')
-            .order('Old Opt Sort', { ascending: true })
+            .order('id', { ascending: true })
             .range(offset, offset + 1000);
 
           if (nextWords && nextWords.length > 0) {
