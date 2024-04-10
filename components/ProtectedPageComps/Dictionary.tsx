@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
 
 const DictionaryPage = () => {
-  const [searchWord, setSearchWord] = useState('dictionary, encyclopedia');
+  const [searchWord, setSearchWord] = useState();
   const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
   const [wordInfo, setWordInfo] = useState<any>(null);
   const [numWordsFetched, setNumWordsFetched] = useState<number>(0);
@@ -131,22 +131,22 @@ const DictionaryPage = () => {
         </datalist>
         <button onClick={handleSearch} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-xl">Search</button>
       </div>
-      <div className="bg-white text-black mt-5 p-10 rounded-lg">
         {wordInfo && searchWord.trim() !== '' && (  // Check if wordInfo is not null and searchWord is not empty
-          <div className="text-2xl">
-            <div className="text-4xl">
-              {searchWord.charAt(0).toUpperCase() + searchWord.slice(1)}
+        <div className="bg-white text-black mt-5 p-10 rounded-lg">
+            <div className="text-2xl">
+              <div className="text-4xl">
+                {searchWord.charAt(0).toUpperCase() + searchWord.slice(1)}
+              </div>
+              <hr className="my-2 border-black"></hr>
+              <div className="flex items-center">Kanji Composition:<div className=" ml-4 text-4xl">{wordInfo['Vocab-Japanese']}</div></div>
+              <div className="flex items-center">Part of Speech: <div className=" ml-4 text-3xl">{wordInfo['Part of Speech'].charAt(0).toUpperCase() + wordInfo['Part of Speech'].slice(1)}</div></div>
+              <div className="flex items-center">Sentence-Japanese: <div className=" ml-4 text-3xl">{wordInfo['Sentence-Japanese']}</div></div>
+              <div className="flex items-center">Sentence-English: <div className=" ml-4 text-3xl">{wordInfo['Sentence-English']}</div></div>
+              <div className="flex items-center">Vocab-Furigana:  <div className=" ml-4 text-3xl">{wordInfo['Vocab-Furigana']}</div></div>
             </div>
-            <hr className="my-2 border-black"></hr>
-            <div className="flex items-center">Kanji Composition:<div className=" ml-4 text-4xl">{wordInfo['Vocab-Japanese']}</div></div>
-            <div className="flex items-center">Part of Speech: <div className=" ml-4 text-3xl">{wordInfo['Part of Speech'].charAt(0).toUpperCase() + wordInfo['Part of Speech'].slice(1)}</div></div>
-            <div className="flex items-center">Sentence-Japanese: <div className=" ml-4 text-3xl">{wordInfo['Sentence-Japanese']}</div></div>
-            <div className="flex items-center">Sentence-English: <div className=" ml-4 text-3xl">{wordInfo['Sentence-English']}</div></div>
-            <div className="flex items-center">Vocab-Furigana:  <div className=" ml-4 text-3xl">{wordInfo['Vocab-Furigana']}</div></div>
           </div>
         )}
       </div>
-    </div>
   );
 };
 
