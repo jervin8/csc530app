@@ -23,7 +23,7 @@ export default function Contact() {
                     type="text"
                     id="name"
                     name="name"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 text-gray-600"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 text-gray-600"
                     placeholder="Your Name"
                     />
                 </div>
@@ -35,7 +35,7 @@ export default function Contact() {
                     type="email"
                     id="email"
                     name="email"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 text-gray-600"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 text-gray-600"
                     placeholder="Your Email"
                     />
                 </div>
@@ -46,14 +46,14 @@ export default function Contact() {
                     <textarea
                     id="message"
                     name="message"
-                    rows="5"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 text-gray-600"
+                    rows={5}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 text-gray-600"
                     placeholder="Your Message"
                     ></textarea>
                 </div>
                 <button
                     type="submit"
-                    className="w-full py-3 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
+                    className="w-full py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 transition duration-300"
                 >
                     Submit
                 </button>
