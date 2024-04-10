@@ -65,7 +65,7 @@ const DictionaryPage = () => {
         .select('*')
         .eq('Vocab-English', searchWord.toLowerCase())
         .single();
-      
+
       if (error) {
         console.error('Error fetching word information:', error);
         setWordInfo(null);
@@ -88,32 +88,36 @@ const DictionaryPage = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <p>Number of words fetched for suggestions: {numWordsFetched}</p>
-      <input
-        className='text-black'
-        type="text"
-        value={searchWord}
-        onChange={(e) => setSearchWord(e.target.value)}
-        onKeyPress={handleKeyPress}
-        list="wordSuggestions"
-      />
-      <datalist id="wordSuggestions">
-        {wordSuggestions.map((word, index) => (
-          <option key={index} value={word} />
-        ))}
-      </datalist>
-      <button onClick={handleSearch}>Search</button>
-      {wordInfo && (
-        <div>
-          <h2>{searchWord}</h2>
-          <p>Japanese Equivalent: {wordInfo['Vocab-Japanese']}</p>
-          <p>Part of Speech: {wordInfo['Part of Speech']}</p>
-          <p>Sentence-Japanese: {wordInfo['Sentence-Japanese']}</p>
-          <p>Sentence-English: {wordInfo['Sentence-English']}</p>
-          <p>Vocab-Furigana: {wordInfo['Vocab-Furigana']}</p>
-        </div>
-      )}
+      <div className="flex items-center mt-5">
+        <input
+          className='text-black w-full mr-2 py-2 px-4 border border-gray-300 rounded-lg'
+          type="text"
+          value={searchWord}
+          onChange={(e) => setSearchWord(e.target.value)}
+          onKeyPress={handleKeyPress}
+          list="wordSuggestions"
+        />
+        <datalist id="wordSuggestions">
+          {wordSuggestions.map((word, index) => (
+            <option key={index} value={word} />
+          ))}
+        </datalist>
+        <button onClick={handleSearch} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg">Search</button>
+      </div>
+      <div className="bg-white mt-5 p-10 rounded-lg">
+        {wordInfo && (
+          <div>
+            <div className="text-4xl">{searchWord.charAt(0).toUpperCase()+searchWord.slice(1)}</div>
+            <div>Kanji Composition: {wordInfo['Vocab-Japanese']}</div>
+            <div>Part of Speech: {wordInfo['Part of Speech']}</div>
+            <div>Sentence-Japanese: {wordInfo['Sentence-Japanese']}</div>
+            <div>Sentence-English: {wordInfo['Sentence-English']}</div>
+            <div>Vocab-Furigana: {wordInfo['Vocab-Furigana']}</div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
