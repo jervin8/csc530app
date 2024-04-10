@@ -122,11 +122,47 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
               console.log("error new bucket value doesnt match any possible bucket(1-10)");
           }
           
-          //update userwords review date to be the new date decided in switch statement
-          let newdate = myDate.toISOString().slice(0, 10)
-          const { error: any } = await supabase.from('UserWords').update({reviewDate: newdate}).eq('id', P)
-          
+        } else {
+          //update mydate to match new bucket date
+          switch(numbucket) {
+            case 1:
+              myDate.setDate(myDate.getDate() + 1) // if it was in bucket 1 and they got it wrong it stays in bucket 1 and adds 1 day to reveiw date
+              break;
+            case 2:
+              myDate.setDate(myDate.getDate() + 1) // if it was in bucket 2 and they got it wrong it goes down 1 bucket and adds 1 day to review date
+              break;
+            case 3:
+              myDate.setDate(myDate.getDate() + 1) // adding number
+              break;
+            case 4:
+              myDate.setDate(myDate.getDate() + 1) // adding number
+              break;
+            case 5:
+              myDate.setDate(myDate.getDate() + 1) // adding number
+              break;
+            case 6:
+              myDate.setDate(myDate.getDate() + 2) // adding number
+              break;
+            case 7:
+              myDate.setDate(myDate.getDate() + 4) // adding number
+              break;
+            case 8:
+              myDate.setDate(myDate.getDate() + 7) // adding number
+              break;
+            case 9:
+              myDate.setDate(myDate.getDate() + 14) // adding number
+              break;
+            case 10:
+              myDate.setDate(myDate.getDate() + 30) // adding number
+              break;
+            default:
+              console.log("error new bucket value doesnt match any possible bucket(1-15)");
+          }
         }
+
+        //update userwords review date to be the new date decided in switch statement
+        let newdate = myDate.toISOString().slice(0, 10)
+        const { error: any } = await supabase.from('UserWords').update({reviewDate: newdate}).eq('id', P)
 
         setCompletedWords([...completedWords, currentWord]);
         const newWords = remainingWords.filter(word => word !== currentWord);
