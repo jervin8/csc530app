@@ -47,6 +47,11 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
       //getting todays date
       var myDate = new Date();
+       
+
+       
+      // Use Johns dumb json stuff to get rid of null errors
+
 
       //get words2id for current word
       const{data: currwordid} = await supabase.from('Words2').select('id').eq('Vocab-English', currentWord)
