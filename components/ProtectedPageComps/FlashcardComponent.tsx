@@ -27,6 +27,9 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
   const currentWord = remainingWords[currentWordIndex % remainingWords.length];
 
+  //setting last word = to last word in remaining words array since that is where the most recent wrong answer was
+  const lastword = remainingWords[remainingWords.length - 1]
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     setIsCorrect(false);
@@ -44,6 +47,8 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
       if (!user) {
         return;
       }
+
+      
 
       //getting todays date
       var myDate = new Date();
@@ -235,7 +240,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         <div>
           <p>Answer remove this section later: {currentWord}</p>
           {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
-          {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {currentWord}</p>}
+          {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
           <input
             type="text"
             className='text-black'
