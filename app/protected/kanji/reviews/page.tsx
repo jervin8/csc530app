@@ -30,13 +30,13 @@ export default async function KanjiReviews() {
     //all of the above is finished -------------------------------------------------------------
 
     ////gets words that are due for review for the currently logged in user
-    const { data: words, error: wordsError } = await supabase.from('Words2').select('Vocab-Japanese').in('id', wordIds);
+    const { data: words, error: wordsError } = await supabase.from('Words2').select('Vocab-Japanese').in('id', kanjiids);
 
     // Mapping the fetched japanese words to be displayed into an array
     const wordValues = words!.map((word: any) => word['Vocab-Japanese']);
 
     //gets english word equivalent to the japanese word
-    const { data: engword, error: endwordError } = await supabase.from('Words2').select('Vocab-English').in('id', wordIds);
+    const { data: engword, error: endwordError } = await supabase.from('Words2').select('Vocab-English').in('id', kanjiids);
 
     //maps the fetched english words into array
     const engwordarr = engword!.map((word: any) => word['Vocab-English']);

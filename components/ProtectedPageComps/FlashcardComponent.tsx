@@ -55,15 +55,15 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
       //get words2id for current word
       const{data: currwordid} = await supabase.from('Words2').select('id').eq('Vocab-English', currentWord)
-      const { id } = currwordid[0];
+      const { id } = currwordid![0];
       //get current words's userwordid
       const { data: userwordid } = await supabase.from('UserWords').select('id').eq('userID', user.id).eq('words2ID', id)
-      const { id: P } = userwordid[0];
+      const { id: P } = userwordid![0];
       //gett bucket value for current word
       const { data: currentbucket } = await supabase.from('UserWords').select('bucket').eq('id', P).eq('userID', user.id)
      
       //make int holding json currentbucket
-      const { bucket: numbucket } = currentbucket[0];
+      const { bucket: numbucket } = currentbucket![0];
      
       //getting first time int ( 0 or 1 )
       const { data: firsttime } = await supabase.from('UserWords').select('First_Time').eq('id', P)
