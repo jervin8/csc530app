@@ -49,16 +49,21 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
       var myDate = new Date();
        
 
-       
-      // Use Johns dumb json stuff to get rid of null errors
-
-
       //get words2id for current word
       const{data: currwordid} = await supabase.from('Words2').select('id').eq('Vocab-English', currentWord)
       const { id } = currwordid![0];
+
+      //this works but variable cannot be read in return since its scope is to the handlekeypress function. therefore no current way to display the current japanes ewordd to the screne
+      //get japanese equivalent for current word to display on screen
+      //const{data: currentwordjapequiv} = await supabase.from('Words2').select('Vocab-Japanese').eq('id', currwordid)
+      //let stringcurrentwordjapequiv = JSON.stringify(currentwordjapequiv);
+      //const currwordjapequiv = JSON.parse(stringcurrentwordjapequiv);
+      
+
       //get current words's userwordid
       const { data: userwordid } = await supabase.from('UserWords').select('id').eq('userID', user.id).eq('words2ID', id)
       const { id: P } = userwordid![0];
+
       //gett bucket value for current word
       const { data: currentbucket } = await supabase.from('UserWords').select('bucket').eq('id', P).eq('userID', user.id)
      
@@ -222,13 +227,13 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
   return (
     <div>
-      <h2>Flashcard</h2>
+      <h2>Type the english equivalent: kanji goes here</h2>
       <div>
         
       </div>
       {remainingWords.length > 0 && (
         <div>
-          <p>Type the word: {currentWord}</p>
+          <p>Answer remove this section later: {currentWord}</p>
           {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
           {isIncorrect && <p style={{ color: 'red' }}>Incorrect! Please try again.</p>}
           <input

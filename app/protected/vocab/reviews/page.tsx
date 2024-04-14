@@ -43,9 +43,6 @@ return(
   <main>
     <ExitButton />
 
-    <p>{JSON.stringify(wordValues)}</p>
-    <p>{JSON.stringify(engwordarr)}</p>
-
     <FlashcardComponent words={engwordarr} />
 
   </main>
