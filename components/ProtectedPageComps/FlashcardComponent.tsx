@@ -235,7 +235,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         <div>
           <p>Answer remove this section later: {currentWord}</p>
           {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
-          {isIncorrect && <p style={{ color: 'red' }}>Incorrect! Please try again.</p>}
+          {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {currentWord}</p>}
           <input
             type="text"
             className='text-black'
