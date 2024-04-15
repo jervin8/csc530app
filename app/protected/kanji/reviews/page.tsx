@@ -27,19 +27,18 @@ export default async function KanjiReviews() {
     //after this line of code executes, kanjiids will be an array containing only the kanjiID values extracted from the objects fetched from the 'UserKanji' table. /
     const kanjiids = userkanjiids!.map(UserKanji => UserKanji.kanjiID);
 
-    //all of the above is finished -------------------------------------------------------------
-
     ////gets words that are due for review for the currently logged in user
-    const { data: words, error: wordsError } = await supabase.from('Words2').select('Vocab-Japanese').in('id', kanjiids);
+    const { data: japwords, error: wordsError } = await supabase.from('Kanji').select('kanji').in('id', kanjiids);
 
     // Mapping the fetched japanese words to be displayed into an array
-    const wordValues = words!.map((word: any) => word['Vocab-Japanese']);
+    const wordValues = japwords!.map((japword: any) => japword['kanji']);
 
     //gets english word equivalent to the japanese word
-    const { data: engword, error: endwordError } = await supabase.from('Words2').select('Vocab-English').in('id', kanjiids);
+    const { data: engword, error: endwordError } = await supabase.from('Kanji').select('keyword_6th_ed').in('id', kanjiids);
 
     //maps the fetched english words into array
-    const engwordarr = engword!.map((word: any) => word['Vocab-English']);
+    const engwordarr = engword!.map((word: any) => word['keyword_6th_ed']);
+
 
 
 return(
