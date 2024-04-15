@@ -14,7 +14,8 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [currwordJap, setCurrwordJap] = useState<any>(null); // State to hold current word data
+  const [currwordJap, setCurrwordJap] = useState<string | null>(null); // State to hold the Japanese equivalent
+
 
   const supabase = createClient();
   
@@ -25,19 +26,40 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
       setCurrentWordIndex(0);
     }
    
-    fetchWordSuggestions();
+
   }, [remainingWords]);
 
-  const currentWord = remainingWords[currentWordIndex % remainingWords.length];
+  
 
-  const fetchWordSuggestions = async () => {
-    const { data } = await supabase.from('Words2').select('Vocab-Japanese').eq('Vocab-English', currentWord);
-    if (data && data.length > 0) {
-      setCurrwordJap(data[0]); // Set the fetched data to currwordid state
+  const currentWord = remainingWords[currentWordIndex % remainingWords.length];
+  interface WordData {
+    'Vocab-Japanese': string;
+  }
+  
+  const fetchWordJapanese = async (word: string) => {
+    try {
+      const { data: wordData, error } = await supabase
+        .from('Words2')
+        .select('Vocab-Japanese')
+        .eq('Vocab-English', word)
+        .single();
+  
+      if (error) {
+        throw error;
+      }
+  
+      if (wordData) {
+        setCurrwordJap(wordData['Vocab-Japanese']);
+      }
+    } catch (error) {
+      console.error('Error fetching word Japanese:', error);
     }
   };
 
-
+  useEffect(() => {
+    fetchWordJapanese(currentWord); // Fetch Japanese equivalent when currentWord changes
+  }, [currentWord]);
+  
   //setting last word = to last word in remaining words array since that is where the most recent wrong answer was
   const lastword = remainingWords[remainingWords.length - 1]
 
@@ -241,9 +263,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
     <div>
         <div className="flex items-center">
   Kanji Composition:
-  <div className="ml-4 text-4xl">
-    {currwordJap && currwordJap['Vocab-Japanese']}
-  </div>
+ 
 </div>
       <div>
         
