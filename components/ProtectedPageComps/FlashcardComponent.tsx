@@ -85,9 +85,9 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
       const { data: firsttime } = await supabase.from('UserWords').select('First_Time').eq('id', P)
 
       //make int holding firsttime int
-      let stringfirsttime = JSON.stringify(firsttime);
-      let firsttimeobj = JSON.parse(stringfirsttime);
-      let newfirsttime = Number(!firsttimeobj.First_Time);
+      const { First_Time: newfirsttime } = firsttime![0];
+      console.log(newfirsttime);
+     
 
       
 
