@@ -14,6 +14,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
+  const [currwordid, setCurrwordid] = useState<any>(null); // State to hold current word data
 
   const supabase = createClient();
   
@@ -23,9 +24,19 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
     if (remainingWords.length > 0) {
       setCurrentWordIndex(0);
     }
+   
+    fetchWordSuggestions();
   }, [remainingWords]);
 
   const currentWord = remainingWords[currentWordIndex % remainingWords.length];
+
+  const fetchWordSuggestions = async () => {
+    const { data } = await supabase.from('Words2').select('Vocab-Japanese').eq('Vocab-English', currentWord);
+    if (data && data.length > 0) {
+      setCurrwordid(data[0]); // Set the fetched data to currwordid state
+    }
+  };
+
 
   //setting last word = to last word in remaining words array since that is where the most recent wrong answer was
   const lastword = remainingWords[remainingWords.length - 1]
@@ -57,12 +68,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
       //get words2id for current word
       const{data: currwordid} = await supabase.from('Words2').select('id').eq('Vocab-English', currentWord)
       const { id } = currwordid![0];
-
-      //this works but variable cannot be read in return since its scope is to the handlekeypress function. therefore no current way to display the current japanes ewordd to the screne
-      //get japanese equivalent for current word to display on screen
-      //const{data: currentwordjapequiv} = await supabase.from('Words2').select('Vocab-Japanese').eq('id', currwordid)
-      //let stringcurrentwordjapequiv = JSON.stringify(currentwordjapequiv);
-      //const currwordjapequiv = JSON.parse(stringcurrentwordjapequiv);
+      
       
 
       //get current words's userwordid
@@ -232,7 +238,12 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
   return (
     <div>
-      <h2>Type the english equivalent: kanji goes here</h2>
+        <div className="flex items-center">
+  Kanji Composition:
+  <div className="ml-4 text-4xl">
+    {currwordid && currwordid['Vocab-Japanese']}
+  </div>
+</div>
       <div>
         
       </div>
