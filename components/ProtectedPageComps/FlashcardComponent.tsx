@@ -35,10 +35,9 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   interface WordData {
     'Vocab-Japanese': string;
   }
-  
   const fetchWordJapanese = async (word: string) => {
     try {
-      const { data: wordData, error } = await supabase
+      const { data, error } = await supabase
         .from('Words2')
         .select('Vocab-Japanese')
         .eq('Vocab-English', word)
@@ -48,13 +47,18 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         throw error;
       }
   
-      if (wordData) {
-        setCurrwordJap(wordData['Vocab-Japanese']);
+      if (data && 'Vocab-Japanese' in data) {
+        const japaneseWord: string = data['Vocab-Japanese'] as string;
+        setCurrwordJap(japaneseWord);
+      } else {
+        console.error('Error: Vocab-Japanese not found in data');
       }
     } catch (error) {
       console.error('Error fetching word Japanese:', error);
     }
   };
+  
+  
 
   useEffect(() => {
     fetchWordJapanese(currentWord); // Fetch Japanese equivalent when currentWord changes
@@ -240,7 +244,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         setInputValue('');
       }
       setCurrentWordIndex(currentWordIndex + 1); // Move to the next word regardless of correctness
-      fetchWordSuggestions();
+    
     }
   };
 
@@ -261,10 +265,11 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
   return (
     <div>
-        <div className="flex items-center">
-  Kanji Composition:
- 
-</div>
+           <div className="flex items-center">
+      Kanji Composition:
+      {currwordJap && <span>{currwordJap}</span>}
+    </div>
+    <div></div>
       <div>
         
       </div>
