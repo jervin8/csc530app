@@ -2,8 +2,8 @@ import ExitButton from "@/components/ProtectedPageComps/ExitButton";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ValidatingTextBox from "@/components/ProtectedPageComps/ValidatingTextBox";
-import WordGame from "@/components/ProtectedPageComps/FlashcardComponent";
-import FlashcardComponent from "@/components/ProtectedPageComps/FlashcardComponent";
+import WordGame from "@/components/ProtectedPageComps/VocabFlashcardComponent";
+import FlashcardComponent from "@/components/ProtectedPageComps/VocabFlashcardComponent";
 import KanjiFlashcardComponent from "@/components/ProtectedPageComps/KanjiFlashcardComponent";
 
 export default async function KanjiReviews() {

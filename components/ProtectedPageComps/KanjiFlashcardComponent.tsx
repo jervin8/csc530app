@@ -6,7 +6,7 @@ interface Props {
   words: string[];
 }
 
-const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
+const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   const [inputValue, setInputValue] = useState('');
   const [completedWords, setCompletedWords] = useState<string[]>([]);
   const [remainingWords, setRemainingWords] = useState<string[]>(words);
@@ -14,6 +14,8 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
+  const [currwordJap, setCurrwordJap] = useState<string | null>(null); // State to hold the Japanese equivalent
+
 
   const supabase = createClient();
   
@@ -23,9 +25,46 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
     if (remainingWords.length > 0) {
       setCurrentWordIndex(0);
     }
+   
+
   }, [remainingWords]);
 
+  
+
   const currentWord = remainingWords[currentWordIndex % remainingWords.length];
+  interface WordData {
+    'Vocab-Japanese': string;
+  }
+  const fetchWordJapanese = async (word: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('Words2')
+        .select('Vocab-Japanese')
+        .eq('Vocab-English', word)
+        .single();
+  
+      if (error) {
+        throw error;
+      }
+  
+      if (data && 'Vocab-Japanese' in data) {
+        const japaneseWord: string = data['Vocab-Japanese'] as string;
+        setCurrwordJap(japaneseWord);
+      } else {
+        console.error('Error: Vocab-Japanese not found in data');
+      }
+    } catch (error) {
+      console.error('Error fetching word Japanese:', error);
+    }
+  };
+  
+
+  useEffect(() => {
+    fetchWordJapanese(currentWord); // Fetch Japanese equivalent when currentWord changes
+  }, [currentWord]);
+  
+  //setting last word = to last word in remaining words array since that is where the most recent wrong answer was
+  const lastword = remainingWords[remainingWords.length - 1]
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -45,20 +84,22 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
         return;
       }
 
+      
+
       //getting todays date
       var myDate = new Date();
        
 
-       
-      // Use Johns dumb json stuff to get rid of null errors
-
-
       //get words2id for current word
       const{data: currwordid} = await supabase.from('Words2').select('id').eq('Vocab-English', currentWord)
       const { id } = currwordid![0];
+      
+      
+
       //get current words's userwordid
       const { data: userwordid } = await supabase.from('UserWords').select('id').eq('userID', user.id).eq('words2ID', id)
       const { id: P } = userwordid![0];
+
       //gett bucket value for current word
       const { data: currentbucket } = await supabase.from('UserWords').select('bucket').eq('id', P).eq('userID', user.id)
      
@@ -69,9 +110,9 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
       const { data: firsttime } = await supabase.from('UserWords').select('First_Time').eq('id', P)
 
       //make int holding firsttime int
-      let stringfirsttime = JSON.stringify(firsttime);
-      let firsttimeobj = JSON.parse(stringfirsttime);
-      let newfirsttime = Number(!firsttimeobj.First_Time);
+      const { First_Time: newfirsttime } = firsttime![0];
+      console.log(newfirsttime);
+     
 
       
 
@@ -202,6 +243,7 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
         setInputValue('');
       }
       setCurrentWordIndex(currentWordIndex + 1); // Move to the next word regardless of correctness
+    
     }
   };
 
@@ -222,15 +264,19 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
 
   return (
     <div>
-      <h2>Flashcard</h2>
+    <div className="flex items-center">
+      Kanji Composition:
+      {currwordJap && <span>{currwordJap}</span>}
+    </div>
+    <div></div>
       <div>
         
       </div>
       {remainingWords.length > 0 && (
         <div>
-          <p>Type the word: {currentWord}</p>
+          <p>Answer remove this section later: {currentWord}</p>
           {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
-          {isIncorrect && <p style={{ color: 'red' }}>Incorrect! Please try again.</p>}
+          {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
           <input
             type="text"
             className='text-black'
@@ -248,4 +294,4 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
   );
 };
 
-export default KanjiFlashcardComponent;
+export default FlashcardComponent;
