@@ -58,7 +58,6 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
     }
   };
   
-  
 
   useEffect(() => {
     fetchWordJapanese(currentWord); // Fetch Japanese equivalent when currentWord changes
@@ -265,7 +264,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
   return (
     <div>
-           <div className="flex items-center">
+    <div className="flex items-center">
       Kanji Composition:
       {currwordJap && <span>{currwordJap}</span>}
     </div>
