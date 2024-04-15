@@ -6,7 +6,7 @@ interface Props {
   words: string[];
 }
 
-const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
+const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   const [inputValue, setInputValue] = useState('');
   const [completedWords, setCompletedWords] = useState<string[]>([]);
   const [remainingWords, setRemainingWords] = useState<string[]>(words);
@@ -14,6 +14,8 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
+  const [currwordJap, setCurrwordJap] = useState<string | null>(null); // State to hold the Japanese equivalent
+
 
   const supabase = createClient();
   
@@ -23,9 +25,44 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
     if (remainingWords.length > 0) {
       setCurrentWordIndex(0);
     }
+   
+
   }, [remainingWords]);
 
+  
+
   const currentWord = remainingWords[currentWordIndex % remainingWords.length];
+ 
+  const fetchWordJapanese = async (word: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('Kanji')
+        .select('kanji')
+        .eq('keyword_6th_ed', word)
+        .single();
+  
+      if (error) {
+        throw error;
+      }
+  
+      if (data && 'kanji' in data) {
+        const kanji: string = data['kanji'] as string;
+        setCurrwordJap(kanji);
+      } else {
+        console.error('Error: kanji not found in data');
+      }
+    } catch (error) {
+      console.error('Error fetching kanji:', error);
+    }
+  };
+  
+
+  useEffect(() => {
+    fetchWordJapanese(currentWord); // Fetch Japanese equivalent when currentWord changes
+  }, [currentWord]);
+  
+  //setting last word = to last word in remaining words array since that is where the most recent wrong answer was
+  const lastword = remainingWords[remainingWords.length - 1]
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -45,33 +82,35 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
         return;
       }
 
+      
+
       //getting todays date
       var myDate = new Date();
        
 
-       
-      // Use Johns dumb json stuff to get rid of null errors
-
-
       //get words2id for current word
-      const{data: currwordid} = await supabase.from('Words2').select('id').eq('Vocab-English', currentWord)
+      const{data: currwordid} = await supabase.from('Kanji').select('id').eq('keyword_6th_ed', currentWord)
       const { id } = currwordid![0];
+      
+      
+
       //get current words's userwordid
-      const { data: userwordid } = await supabase.from('UserWords').select('id').eq('userID', user.id).eq('words2ID', id)
+      const { data: userwordid } = await supabase.from('UserKanji').select('id').eq('userID', user.id).eq('kanjiID', id)
       const { id: P } = userwordid![0];
+
       //gett bucket value for current word
-      const { data: currentbucket } = await supabase.from('UserWords').select('bucket').eq('id', P).eq('userID', user.id)
+      const { data: currentbucket } = await supabase.from('UserKanji').select('bucket').eq('id', P).eq('userID', user.id)
      
       //make int holding json currentbucket
       const { bucket: numbucket } = currentbucket![0];
      
       //getting first time int ( 0 or 1 )
-      const { data: firsttime } = await supabase.from('UserWords').select('First_Time').eq('id', P)
+      const { data: firsttime } = await supabase.from('UserKanji').select('First_Time').eq('id', P)
 
       //make int holding firsttime int
-      let stringfirsttime = JSON.stringify(firsttime);
-      let firsttimeobj = JSON.parse(stringfirsttime);
-      let newfirsttime = Number(!firsttimeobj.First_Time);
+      const { First_Time: newfirsttime } = firsttime![0];
+      console.log(newfirsttime);
+     
 
       
 
@@ -82,7 +121,7 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
           console.log("is first time");
           //raise bucket value by 1 if bucket is less than 15
           if(numbucket<10){
-            const { error } = await supabase.from('UserWords').update({bucket: numbucket+1}).eq('id', P)
+            const { error } = await supabase.from('UserKanji').update({bucket: numbucket+1}).eq('id', P)
            
           }
           
@@ -162,7 +201,7 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
 
         //update userwords review date to be the new date decided in switch statement
         let newdate = myDate.toISOString().slice(0, 10)
-        const { error: any } = await supabase.from('UserWords').update({reviewDate: newdate}).eq('id', P)
+        const { error: any } = await supabase.from('UserKanji').update({reviewDate: newdate}).eq('id', P)
 
         setCompletedWords([...completedWords, currentWord]);
         const newWords = remainingWords.filter(word => word !== currentWord);
@@ -171,7 +210,7 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
         setIsCorrect(true);
 
         //setting firsttime back to default true for next time they review this word
-        const { error } = await supabase.from('UserWords').update({First_Time: 1}).eq('id', P)
+        const { error } = await supabase.from('UserKanji').update({First_Time: 1}).eq('id', P)
        
 
 //if wrong
@@ -180,17 +219,17 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
           console.log("is first time");
           //lower bucket value by 1 if bucket is greater than 1 and less than 5
           if(numbucket>1 && numbucket<5){
-            const { error } = await supabase.from('UserWords').update({bucket: numbucket-1}).eq('id', P)
+            const { error } = await supabase.from('UserKanji').update({bucket: numbucket-1}).eq('id', P)
            
           } 
           else if(numbucket>=5){ //lower bucket value by 2 if it is 5 and up
-            const { error } = await supabase.from('UserWords').update({bucket: numbucket-2}).eq('id', P)
+            const { error } = await supabase.from('UserKanji').update({bucket: numbucket-2}).eq('id', P)
             
           }
 
           
           //setting firsttime to false since they got it wrong on their first time
-          const { error } = await supabase.from('UserWords').update({First_Time: 0}).eq('id', P)
+          const { error } = await supabase.from('UserKanji').update({First_Time: 0}).eq('id', P)
           
         }
 
@@ -202,6 +241,7 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
         setInputValue('');
       }
       setCurrentWordIndex(currentWordIndex + 1); // Move to the next word regardless of correctness
+    
     }
   };
 
@@ -222,15 +262,19 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
 
   return (
     <div>
-      <h2>Flashcard</h2>
+    <div className="flex items-center">
+      Kanji Composition:
+      {currwordJap && <span>{currwordJap}</span>}
+    </div>
+    <div></div>
       <div>
         
       </div>
       {remainingWords.length > 0 && (
         <div>
-          <p>Type the word: {currentWord}</p>
+          <p>Answer remove this section later: {currentWord}</p>
           {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
-          {isIncorrect && <p style={{ color: 'red' }}>Incorrect! Please try again.</p>}
+          {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
           <input
             type="text"
             className='text-black'
@@ -248,4 +292,4 @@ const KanjiFlashcardComponent: React.FC<Props> =  ({ words }) => {
   );
 };
 
-export default KanjiFlashcardComponent;
+export default FlashcardComponent;

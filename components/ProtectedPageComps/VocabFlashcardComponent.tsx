@@ -14,7 +14,8 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [currwordid, setCurrwordid] = useState<any>(null); // State to hold current word data
+  const [currwordJap, setCurrwordJap] = useState<string | null>(null); // State to hold the Japanese equivalent
+
 
   const supabase = createClient();
   
@@ -25,19 +26,43 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
       setCurrentWordIndex(0);
     }
    
-    fetchWordSuggestions();
+
   }, [remainingWords]);
 
-  const currentWord = remainingWords[currentWordIndex % remainingWords.length];
+  
 
-  const fetchWordSuggestions = async () => {
-    const { data } = await supabase.from('Words2').select('Vocab-Japanese').eq('Vocab-English', currentWord);
-    if (data && data.length > 0) {
-      setCurrwordid(data[0]); // Set the fetched data to currwordid state
+  const currentWord = remainingWords[currentWordIndex % remainingWords.length];
+  interface WordData {
+    'Vocab-Japanese': string;
+  }
+  const fetchWordJapanese = async (word: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('Words2')
+        .select('Vocab-Japanese')
+        .eq('Vocab-English', word)
+        .single();
+  
+      if (error) {
+        throw error;
+      }
+  
+      if (data && 'Vocab-Japanese' in data) {
+        const japaneseWord: string = data['Vocab-Japanese'] as string;
+        setCurrwordJap(japaneseWord);
+      } else {
+        console.error('Error: Vocab-Japanese not found in data');
+      }
+    } catch (error) {
+      console.error('Error fetching word Japanese:', error);
     }
   };
+  
 
-
+  useEffect(() => {
+    fetchWordJapanese(currentWord); // Fetch Japanese equivalent when currentWord changes
+  }, [currentWord]);
+  
   //setting last word = to last word in remaining words array since that is where the most recent wrong answer was
   const lastword = remainingWords[remainingWords.length - 1]
 
@@ -85,9 +110,9 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
       const { data: firsttime } = await supabase.from('UserWords').select('First_Time').eq('id', P)
 
       //make int holding firsttime int
-      let stringfirsttime = JSON.stringify(firsttime);
-      let firsttimeobj = JSON.parse(stringfirsttime);
-      let newfirsttime = Number(!firsttimeobj.First_Time);
+      const { First_Time: newfirsttime } = firsttime![0];
+      console.log(newfirsttime);
+     
 
       
 
@@ -218,6 +243,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         setInputValue('');
       }
       setCurrentWordIndex(currentWordIndex + 1); // Move to the next word regardless of correctness
+    
     }
   };
 
@@ -238,12 +264,11 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
   return (
     <div>
-        <div className="flex items-center">
-  Kanji Composition:
-  <div className="ml-4 text-4xl">
-    {currwordid && currwordid['Vocab-Japanese']}
-  </div>
-</div>
+    <div className="flex items-center">
+      Kanji Composition:
+      {currwordJap && <span>{currwordJap}</span>}
+    </div>
+    <div></div>
       <div>
         
       </div>
