@@ -32,29 +32,27 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   
 
   const currentWord = remainingWords[currentWordIndex % remainingWords.length];
-  interface WordData {
-    'Vocab-Japanese': string;
-  }
+ 
   const fetchWordJapanese = async (word: string) => {
     try {
       const { data, error } = await supabase
-        .from('Words2')
-        .select('Vocab-Japanese')
-        .eq('Vocab-English', word)
+        .from('Kanji')
+        .select('kanji')
+        .eq('keyword_6th_ed', word)
         .single();
   
       if (error) {
         throw error;
       }
   
-      if (data && 'Vocab-Japanese' in data) {
-        const japaneseWord: string = data['Vocab-Japanese'] as string;
-        setCurrwordJap(japaneseWord);
+      if (data && 'kanji' in data) {
+        const kanji: string = data['kanji'] as string;
+        setCurrwordJap(kanji);
       } else {
-        console.error('Error: Vocab-Japanese not found in data');
+        console.error('Error: kanji not found in data');
       }
     } catch (error) {
-      console.error('Error fetching word Japanese:', error);
+      console.error('Error fetching kanji:', error);
     }
   };
   
@@ -91,23 +89,23 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
        
 
       //get words2id for current word
-      const{data: currwordid} = await supabase.from('Words2').select('id').eq('Vocab-English', currentWord)
+      const{data: currwordid} = await supabase.from('Kanji').select('id').eq('keyword_6th_ed', currentWord)
       const { id } = currwordid![0];
       
       
 
       //get current words's userwordid
-      const { data: userwordid } = await supabase.from('UserWords').select('id').eq('userID', user.id).eq('words2ID', id)
+      const { data: userwordid } = await supabase.from('UserKanji').select('id').eq('userID', user.id).eq('kanjiID', id)
       const { id: P } = userwordid![0];
 
       //gett bucket value for current word
-      const { data: currentbucket } = await supabase.from('UserWords').select('bucket').eq('id', P).eq('userID', user.id)
+      const { data: currentbucket } = await supabase.from('UserKanji').select('bucket').eq('id', P).eq('userID', user.id)
      
       //make int holding json currentbucket
       const { bucket: numbucket } = currentbucket![0];
      
       //getting first time int ( 0 or 1 )
-      const { data: firsttime } = await supabase.from('UserWords').select('First_Time').eq('id', P)
+      const { data: firsttime } = await supabase.from('UserKanji').select('First_Time').eq('id', P)
 
       //make int holding firsttime int
       const { First_Time: newfirsttime } = firsttime![0];
@@ -123,7 +121,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
           console.log("is first time");
           //raise bucket value by 1 if bucket is less than 15
           if(numbucket<10){
-            const { error } = await supabase.from('UserWords').update({bucket: numbucket+1}).eq('id', P)
+            const { error } = await supabase.from('UserKanji').update({bucket: numbucket+1}).eq('id', P)
            
           }
           
@@ -203,7 +201,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
         //update userwords review date to be the new date decided in switch statement
         let newdate = myDate.toISOString().slice(0, 10)
-        const { error: any } = await supabase.from('UserWords').update({reviewDate: newdate}).eq('id', P)
+        const { error: any } = await supabase.from('UserKanji').update({reviewDate: newdate}).eq('id', P)
 
         setCompletedWords([...completedWords, currentWord]);
         const newWords = remainingWords.filter(word => word !== currentWord);
@@ -212,7 +210,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         setIsCorrect(true);
 
         //setting firsttime back to default true for next time they review this word
-        const { error } = await supabase.from('UserWords').update({First_Time: 1}).eq('id', P)
+        const { error } = await supabase.from('UserKanji').update({First_Time: 1}).eq('id', P)
        
 
 //if wrong
@@ -221,17 +219,17 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
           console.log("is first time");
           //lower bucket value by 1 if bucket is greater than 1 and less than 5
           if(numbucket>1 && numbucket<5){
-            const { error } = await supabase.from('UserWords').update({bucket: numbucket-1}).eq('id', P)
+            const { error } = await supabase.from('UserKanji').update({bucket: numbucket-1}).eq('id', P)
            
           } 
           else if(numbucket>=5){ //lower bucket value by 2 if it is 5 and up
-            const { error } = await supabase.from('UserWords').update({bucket: numbucket-2}).eq('id', P)
+            const { error } = await supabase.from('UserKanji').update({bucket: numbucket-2}).eq('id', P)
             
           }
 
           
           //setting firsttime to false since they got it wrong on their first time
-          const { error } = await supabase.from('UserWords').update({First_Time: 0}).eq('id', P)
+          const { error } = await supabase.from('UserKanji').update({First_Time: 0}).eq('id', P)
           
         }
 
