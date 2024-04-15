@@ -14,7 +14,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [currwordid, setCurrwordid] = useState<any>(null); // State to hold current word data
+  const [currwordJap, setCurrwordJap] = useState<any>(null); // State to hold current word data
 
   const supabase = createClient();
   
@@ -33,7 +33,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   const fetchWordSuggestions = async () => {
     const { data } = await supabase.from('Words2').select('Vocab-Japanese').eq('Vocab-English', currentWord);
     if (data && data.length > 0) {
-      setCurrwordid(data[0]); // Set the fetched data to currwordid state
+      setCurrwordJap(data[0]); // Set the fetched data to currwordid state
     }
   };
 
@@ -218,6 +218,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         setInputValue('');
       }
       setCurrentWordIndex(currentWordIndex + 1); // Move to the next word regardless of correctness
+      fetchWordSuggestions();
     }
   };
 
@@ -241,7 +242,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         <div className="flex items-center">
   Kanji Composition:
   <div className="ml-4 text-4xl">
-    {currwordid && currwordid['Vocab-Japanese']}
+    {currwordJap && currwordJap['Vocab-Japanese']}
   </div>
 </div>
       <div>
