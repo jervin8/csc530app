@@ -23,7 +23,7 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
     try {
       
       const { data, error } = await supabase
-        .from('Words2')
+        .from('Kanji')
         .select('*')
         .eq('id', id)
         .single();
@@ -62,7 +62,7 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
   
       for (const wordId of words) {
         const { data: wordData, error } = await supabase
-          .from('Words2')
+          .from('Kanji')
           .select('*')
           .eq('id', wordId)
           .single();
@@ -71,9 +71,9 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
           console.error('Error fetching word information:', error);
         } else if (wordData) {
           
-            const { error: insertError } = await supabase.from('UserWords').insert({
+            const { error: insertError } = await supabase.from('UserKanji').insert({
               userID: user!.id,
-              words2ID: wordData.id,
+              kanjiID: wordData.id,
               reviewDate: today
             });
             window.location.href = '/protected';
@@ -96,14 +96,13 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
         <div className="bg-white text-black mt-5 p-10 rounded-lg">
           <div className="text-2xl">
             <div className="text-4xl">
-              {wordInfo['Vocab-Japanese'].charAt(0).toUpperCase() + wordInfo['Vocab-Japanese'].slice(1)}
+              {wordInfo['kanji'].charAt(0).toUpperCase() + wordInfo['kanji'].slice(1)}
             </div>
-            <hr className="my-2 border-black"></hr>Vocab-Japanese
-            <div className="flex items-center">English Composition:<div className=" ml-4 text-4xl">{wordInfo['Vocab-English']}</div></div>
-            <div className="flex items-center">Part of Speech: <div className=" ml-4 text-3xl">{wordInfo['Part of Speech'].charAt(0).toUpperCase() + wordInfo['Part of Speech'].slice(1)}</div></div>
-            <div className="flex items-center">Sentence-Japanese: <div className=" ml-4 text-3xl">{wordInfo['Sentence-Japanese']}</div></div>
-            <div className="flex items-center">Sentence-English: <div className=" ml-4 text-3xl">{wordInfo['Sentence-English']}</div></div>
-            <div className="flex items-center">Vocab-Furigana:  <div className=" ml-4 text-3xl">{wordInfo['Vocab-Furigana']}</div></div>
+            <hr className="my-2 border-black"></hr>
+            <div className="flex items-center">Keyword: <div className=" ml-4 text-4xl">{wordInfo['keyword_6th_ed']}</div></div>
+            <div className="flex items-center">Onyomi: <div className=" ml-4 text-3xl">{wordInfo['on_reading']}</div></div>
+            <div className="flex items-center">Kunyomi: <div className=" ml-4 text-3xl">{wordInfo['kun_reading']}</div></div>
+            <div className="flex items-center">JLPT: <div className=" ml-4 text-3xl">{wordInfo['jlpt']}</div></div>
           </div>
         </div>
       )}
