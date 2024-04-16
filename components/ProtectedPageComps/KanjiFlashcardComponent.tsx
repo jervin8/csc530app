@@ -254,22 +254,27 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   }, [completedWords, words]);
 
   return (
-    <div>
-    <div className="flex items-center">
-      Kanji Composition:
-      {currwordJap && <span>{currwordJap}</span>}
-    </div>
-    <div></div>
-      <div>
+    <div className="h-screen ">
+      <div className="text-center h-1/3">
+        <div className="bg-slate-700 dark:bg-gray-200 text-white dark:text-black h-3/4 text-8xl w-full flex justify-center items-center">
+          {currwordJap}
+        </div>
+        <div className="text-2xl bg-gray-300 text-black h-1/5 w-full flex justify-center items-center">
+          <div>
+            Kanji Composition:
+            {currwordJap && <span>{currwordJap}</span>}
+          </div>
+        </div>
       </div>
+
       {remainingWords.length > 0 && (
-        <div>
-          <p>Answer remove this section later: {currentWord}</p>
+        <div className="flex justify-center items-center">
+          {/*<p>Answer remove this section later: {currentWord}</p>*/}
           {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
           {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
           <input
             type="text"
-            className='text-black'
+            className='text-black w-11/12 p-2 text-3xl rounded-2xl text-center'
             value={inputValue}
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}

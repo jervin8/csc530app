@@ -42,14 +42,14 @@ export default async function KanjiReviews() {
 
 
 return(
-  <main  className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
+  <main  className="h-screen w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
     <ExitButton />
 
-    <p>{JSON.stringify(wordValues)}</p>
+    <div className="w-full h-full">
+      <KanjiFlashcardComponent words={engwordarr} />
+    </div>
+
     <p>{JSON.stringify(engwordarr)}</p>
-
-    <KanjiFlashcardComponent words={engwordarr} />
-
   </main>
 )
 }
