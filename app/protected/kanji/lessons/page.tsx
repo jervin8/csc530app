@@ -2,7 +2,7 @@
 import ExitButton from "@/components/ProtectedPageComps/ExitButton";
 import ValidatingTextBox from "@/components/ProtectedPageComps/ValidatingTextBox";
 import { createClient } from "@/utils/supabase/server";
-import LessonsWordsDisplay from "@/components/ProtectedPageComps/LessonsWordsDisplay";
+import LessonsKanjiDisplay from "@/components/ProtectedPageComps/LessonsKanjiDisplay";
 import { redirect } from "next/navigation";
 
 import { useState } from "react";
@@ -45,7 +45,7 @@ export default async function KanjiLessons() {
     return (
         <main className="w-full">
             <ExitButton />
-            <LessonsWordsDisplay words={newkanjiarr} />
+            <LessonsKanjiDisplay words={newkanjiarr} />
         </main>
     );
 }

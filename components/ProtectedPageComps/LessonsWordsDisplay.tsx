@@ -96,10 +96,10 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
         <div className="bg-white text-black mt-5 p-10 rounded-lg">
           <div className="text-2xl">
             <div className="text-4xl">
-              {wordInfo['Vocab-English'].charAt(0).toUpperCase() + wordInfo['Vocab-English'].slice(1)}
+              {wordInfo['Vocab-Japanese'].charAt(0).toUpperCase() + wordInfo['Vocab-Japanese'].slice(1)}
             </div>
-            <hr className="my-2 border-black"></hr>
-            <div className="flex items-center">Kanji Composition:<div className=" ml-4 text-4xl">{wordInfo['Vocab-Japanese']}</div></div>
+            <hr className="my-2 border-black"></hr>Vocab-Japanese
+            <div className="flex items-center">English Composition:<div className=" ml-4 text-4xl">{wordInfo['Vocab-English']}</div></div>
             <div className="flex items-center">Part of Speech: <div className=" ml-4 text-3xl">{wordInfo['Part of Speech'].charAt(0).toUpperCase() + wordInfo['Part of Speech'].slice(1)}</div></div>
             <div className="flex items-center">Sentence-Japanese: <div className=" ml-4 text-3xl">{wordInfo['Sentence-Japanese']}</div></div>
             <div className="flex items-center">Sentence-English: <div className=" ml-4 text-3xl">{wordInfo['Sentence-English']}</div></div>
