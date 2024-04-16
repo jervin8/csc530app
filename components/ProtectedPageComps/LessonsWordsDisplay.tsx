@@ -1,8 +1,11 @@
 "use client"
+import { createClient } from '@/utils/supabase/client';
 import React, { useState, useEffect } from 'react';
-import { createClient } from "@/utils/supabase/client";
 
-const LessonsWordsDisplay = () => {
+interface Props {
+  words: string[];
+}
+const LessonsWordsDisplay = React.FC<Props> =  ({ words }) => {
   const [searchWord, setSearchWord] = useState();
   const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
   const [wordInfo, setWordInfo] = useState<any>(null);
@@ -12,7 +15,7 @@ const LessonsWordsDisplay = () => {
   useEffect(() => {
     
 
-    
+    {/*I couldn't get the text box to not render so now it automatically renders dictionary, encyclopedia on page start up*/}
     const fetchInitialWordInfo = async () => {
       try {
         const { data, error } = await supabase
@@ -36,54 +39,17 @@ const LessonsWordsDisplay = () => {
       }
     };
 
-    
+   
     fetchInitialWordInfo();
   }, []);
 
-  const handleSearch = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('Words2')
-        .select('*')
-        .eq('Vocab-English', searchWord.toLowerCase())
-        .single()
-
-      if (error) {
-        console.error('Error fetching word information:', error);
-        setWordInfo(null);
-      } else if (data) {
-        setWordInfo(data);
-      } else {
-        console.error('Word not found');
-        setWordInfo(null);
-      }
-    } catch (error) {
-      console.error('Error fetching word information:', error);
-      setWordInfo(null);
-    }
-  };
+ 
 
   
 
   return (
     <div className="">
-      <div className="text-lg text-black dark:text-white">Number of words fetched for suggestions: {numWordsFetched}</div>
-      <div className="flex items-center mt-5">
-        <input
-          className='text-black w-full mr-2 py-2 px-4 border border-gray-300 rounded-lg'
-          type="text"
-          value={searchWord}
-          onChange={(e) => setSearchWord(e.target.value)}
-          onKeyPress={handleKeyPress}
-          list="wordSuggestions"
-        />
-        <datalist id="wordSuggestions">
-          {wordSuggestions.map((word, index) => (
-            <option key={index} value={word} />
-          ))}
-        </datalist>
-        <button onClick={handleSearch} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-xl">Search</button>
-      </div>
+      
         {wordInfo && wordInfo['Vocab-English'].trim() !== '' && (  // Check if wordInfo is not null and searchWord is not empty
         <div className="bg-white text-black mt-5 p-10 rounded-lg">
             <div className="text-2xl">
