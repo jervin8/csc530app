@@ -29,7 +29,7 @@ export default async function Dashboard() {
 return (
   <main className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
     <Navbar/>
-    <div className="pt-20">
+    <div className="pt-10 pb-10">
       <div className="w-3/4 h-full container m-auto grid grid-cols-6 grid-rows-3 p-10 gap-10 place-items-center">
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-10">
           <div className="text-2xl h-1/2">Vocab</div>
