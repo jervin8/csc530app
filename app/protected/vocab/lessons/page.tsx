@@ -16,7 +16,12 @@ export default async function VocabLessons() {
       return redirect("/login");
     }
 
-    
+    //gets wordids that are due for review for the currently logged in user
+    const { data: userwordids, error } = await supabase.from('UserWords').select('words2ID').eq('userID', user.id)
+    console.log(userwordids);
+
+    const { data: newwordsid, error } = await supabase.from('UserWords').select('words2ID').eq('userID', user.id)
+
 
 return(
   <main className="w-full">

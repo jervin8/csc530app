@@ -10,52 +10,9 @@ const LessonsWordsDisplay = () => {
   const supabase = createClient();
 
   useEffect(() => {
-    const fetchWordSuggestions = async () => {
-      try {
-        let allWords: string[] = [];
+    
 
-        let { data: words, error } = await supabase
-          .from('Words2')
-          .select('Vocab-English')
-          .order('id', { ascending: true })
-          .range(0, 1000); // Fetch the first 1000 words
-
-        if (error) {
-          throw error;
-        }
-
-        if (words && words.length > 0) {
-          allWords = words.map((word: any) => word['Vocab-English']);
-          setWordSuggestions(allWords);
-          setNumWordsFetched(allWords.length);
-        }
-
-        // Fetch the next batches of 1000 words until reaching 9567
-        let offset = 1000;
-        while (allWords.length < 9567) {
-          const { data: nextWords } = await supabase
-            .from('Words2')
-            .select('Vocab-English')
-            .order('id', { ascending: true })
-            .range(offset, offset + 1000);
-
-          if (nextWords && nextWords.length > 0) {
-            allWords = allWords.concat(nextWords.map((word: any) => word['Vocab-English']));
-            setWordSuggestions(allWords);
-            setNumWordsFetched(allWords.length);
-            offset += 1000;
-          } else {
-            break;
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching word suggestions:', error);
-        setWordSuggestions([]);
-        setNumWordsFetched(0);
-      }
-    };
-
-    {/*I couldn't get the text box to not render so now it automatically renders dictionary, encyclopedia on page start up*/}
+    
     const fetchInitialWordInfo = async () => {
       try {
         const { data, error } = await supabase
@@ -79,7 +36,7 @@ const LessonsWordsDisplay = () => {
       }
     };
 
-    fetchWordSuggestions();
+    
     fetchInitialWordInfo();
   }, []);
 
@@ -106,11 +63,7 @@ const LessonsWordsDisplay = () => {
     }
   };
 
-  const handleKeyPress = (e: { key: string; }) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
-  };
+  
 
   return (
     <div className="">
