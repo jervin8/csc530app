@@ -268,8 +268,8 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
       </div>
 
       {remainingWords.length > 0 && (
-        <div className="flex justify-center items-center">
-          {/*<p>Answer remove this section later: {currentWord}</p>*/}
+        <div className="flex justify-center items-center text-center">
+          {<p>Answer remove this section later: {currentWord}</p>}
           {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
           {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
           <input
@@ -283,7 +283,9 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         </div>
       )}
       {completedWords.length === words.length && (
-        <p>Congratulations! You have completed all the words! Redirecting...</p>
+        <div className="text-center">
+          <p>Congratulations! You have completed all the words! Redirecting...</p>
+        </div>
       )}
     </div>
   );
