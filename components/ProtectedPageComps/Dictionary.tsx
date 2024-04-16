@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { createClient } from "@/utils/supabase/client";
 
 const DictionaryPage = () => {
-  const [searchWord, setSearchWord] = useState();
+  const [searchWord, setSearchWord] = useState<string>('');
   const [wordSuggestions, setWordSuggestions] = useState<string[]>([]);
   const [wordInfo, setWordInfo] = useState<any>(null);
   const [numWordsFetched, setNumWordsFetched] = useState<number>(0);
@@ -55,41 +55,16 @@ const DictionaryPage = () => {
       }
     };
 
-    {/*I couldn't get the text box to not render so now it automatically renders dictionary, encyclopedia on page start up*/}
-    const fetchInitialWordInfo = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('Words2')
-          .select('*')
-          .eq('Vocab-English', searchWord.toLowerCase())
-          .single();
-
-        if (error) {
-          console.error('Error fetching word information:', error);
-          setWordInfo(null);
-        } else if (data) {
-          setWordInfo(data);
-        } else {
-          console.error('Word not found');
-          setWordInfo(null);
-        }
-      } catch (error) {
-        console.error('Error fetching word information:', error);
-        setWordInfo(null);
-      }
-    };
-
     fetchWordSuggestions();
-    fetchInitialWordInfo();
   }, []);
 
-  const handleSearch = async () => {
+  const fetchWordInfo = async (word: string) => {
     try {
       const { data, error } = await supabase
         .from('Words2')
         .select('*')
-        .eq('Vocab-English', searchWord.toLowerCase())
-        .single()
+        .eq('Vocab-English', word.toLowerCase())
+        .single();
 
       if (error) {
         console.error('Error fetching word information:', error);
@@ -106,11 +81,54 @@ const DictionaryPage = () => {
     }
   };
 
-  const handleKeyPress = (e: { key: string; }) => {
+  const handleSearch = async () => {
+    fetchWordInfo(searchWord);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
   };
+
+  const handleAddToUserWords = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const today = new Date().toISOString().slice(0, 10);
+  
+      // Check if the word already exists for the user
+      const existingWord = await supabase
+        .from('UserWords')
+        .select('*')
+        .eq('userID', user!.id)
+        .eq('words2ID', wordInfo.id)
+        .single();
+  
+      if (existingWord.error) {
+        throw existingWord.error;
+      }
+  
+      if (!existingWord.data) {
+        // If the word doesn't exist, insert it into UserWords
+        const { error } = await supabase.from('UserWords').insert({
+          userID: user!.id,
+          words2ID: wordInfo.id,
+          reviewDate: today
+        });
+  
+        if (error) {
+          console.error('Error adding word to user words:', error);
+        } else {
+          console.log('Word added to user words successfully!');
+        }
+      } else {
+        console.log('Word already exists in user words.');
+      }
+    } catch (error) {
+      console.error('Error adding word to user words:', error);
+    }
+  };
+  
 
   return (
     <div className="">
@@ -131,22 +149,23 @@ const DictionaryPage = () => {
         </datalist>
         <button onClick={handleSearch} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-xl">Search</button>
       </div>
-        {wordInfo && wordInfo['Vocab-English'].trim() !== '' && (  // Check if wordInfo is not null and searchWord is not empty
+      {wordInfo && wordInfo['Vocab-English'].trim() !== '' && (
         <div className="bg-white text-black mt-5 p-10 rounded-lg">
-            <div className="text-2xl">
-              <div className="text-4xl">
-                {wordInfo['Vocab-English'].charAt(0).toUpperCase() + wordInfo['Vocab-English'].slice(1)}
-              </div>
-              <hr className="my-2 border-black"></hr>
-              <div className="flex items-center">Kanji Composition:<div className=" ml-4 text-4xl">{wordInfo['Vocab-Japanese']}</div></div>
-              <div className="flex items-center">Part of Speech: <div className=" ml-4 text-3xl">{wordInfo['Part of Speech'].charAt(0).toUpperCase() + wordInfo['Part of Speech'].slice(1)}</div></div>
-              <div className="flex items-center">Sentence-Japanese: <div className=" ml-4 text-3xl">{wordInfo['Sentence-Japanese']}</div></div>
-              <div className="flex items-center">Sentence-English: <div className=" ml-4 text-3xl">{wordInfo['Sentence-English']}</div></div>
-              <div className="flex items-center">Vocab-Furigana:  <div className=" ml-4 text-3xl">{wordInfo['Vocab-Furigana']}</div></div>
+          <div className="text-2xl">
+            <div className="text-4xl">
+              {wordInfo['Vocab-English'].charAt(0).toUpperCase() + wordInfo['Vocab-English'].slice(1)}
             </div>
+            <hr className="my-2 border-black"></hr>
+            <div className="flex items-center">Kanji Composition:<div className=" ml-4 text-4xl">{wordInfo['Vocab-Japanese']}</div></div>
+            <div className="flex items-center">Part of Speech: <div className=" ml-4 text-3xl">{wordInfo['Part of Speech'].charAt(0).toUpperCase() + wordInfo['Part of Speech'].slice(1)}</div></div>
+            <div className="flex items-center">Sentence-Japanese: <div className=" ml-4 text-3xl">{wordInfo['Sentence-Japanese']}</div></div>
+            <div className="flex items-center">Sentence-English: <div className=" ml-4 text-3xl">{wordInfo['Sentence-English']}</div></div>
+            <div className="flex items-center">Vocab-Furigana:  <div className=" ml-4 text-3xl">{wordInfo['Vocab-Furigana']}</div></div>
           </div>
-        )}
-      </div>
+          <button onClick={handleAddToUserWords} className="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-xl mt-4">Add to My Words</button>
+        </div>
+      )}
+    </div>
   );
 };
 
