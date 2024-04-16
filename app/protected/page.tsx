@@ -32,7 +32,7 @@ return (
     <div className="pt-10 pb-10">
       <div className="w-3/4 h-full container m-auto grid grid-cols-6 grid-rows-3 p-10 gap-10 place-items-center">
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-10">
-          <div className="text-2xl h-1/2">Vocab</div>
+          <div className="text-2xl h-1/2 text-white">Vocab</div>
           <div className="flex justify-end">
             <VocabLessonButton />
             <VocabReviewButton />
@@ -40,7 +40,7 @@ return (
         </div>
 
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-10">
-          <div className="text-2xl h-1/2">Kanji</div>
+          <div className="text-2xl h-1/2 text-white">Kanji</div>
           <div className="flex justify-end">
             <KanjiLessonButton />
             <KanjiReviewButton />
@@ -48,7 +48,7 @@ return (
         </div>
 
         {/*Review forcast type thing here. take up two rows in the third colmn slot*/}
-        <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 row-span-3">
+        <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 row-span-3 text-white">
           <ReviewForecast />
         </div>
 
