@@ -21,7 +21,7 @@ export default async function VocabLessons() {
 return(
   <main className="w-full">
     <ExitButton />
-    <ValidatingTextBox />
+    
   </main>
 )
 }
