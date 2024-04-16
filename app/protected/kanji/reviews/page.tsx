@@ -8,12 +8,12 @@ import KanjiFlashcardComponent from "@/components/ProtectedPageComps/KanjiFlashc
 
 export default async function KanjiReviews() {
     const supabase = createClient();
-  
+
     //redirects to login page if not an authenticated/logged in user
     const {
       data: { user },
     } = await supabase.auth.getUser();
-  
+
     if (!user) {
       return redirect("/login");
     }
@@ -42,7 +42,7 @@ export default async function KanjiReviews() {
 
 
 return(
-  <main>
+  <main  className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
     <ExitButton />
 
     <p>{JSON.stringify(wordValues)}</p>

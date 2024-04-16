@@ -30,13 +30,13 @@ return (
   <main className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
     <Navbar/>
     <div className="pt-20">
-      <div className="w-3/4 h-full container m-auto grid grid-cols-6 grid-rows-4 gap-10 place-items-center">
+      <div className="w-3/4 h-full container m-auto grid grid-cols-6 grid-rows-3 p-10 gap-10 place-items-center">
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-5">
           <h1>Vocab</h1>
           <VocabLessonButton />
           <VocabReviewButton />
         </div>
-        
+
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-5">
           <h1>Kanji</h1>
           <KanjiLessonButton />
@@ -44,35 +44,17 @@ return (
         </div>
 
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 row-span-3">
-          {/*Review forcast type thing here. take up two rows in the thrid colmn slot*/}
+          {/*Review forcast type thing here. take up two rows in the third colmn slot*/}
           <ReviewForecast />
         </div>
 
         <div className=" bg-white text-black w-full h-full rounded-lg p-5 col-span-4 row-span-2">
           <WordCountGraph />
         </div>
-
-        <div className="w-full h-full m-auto grid grid-cols-5 col-span-6 place-items-center">
-          <div className="w-3/4 h-3/4 rounded-lg bg-indigo-600 p-5">
-            Rookie
-          </div>
-          <div className="w-3/4 h-3/4 rounded-lg bg-indigo-600 p-5">
-            Amateur
-          </div>
-          <div className="w-3/4 h-3/4 rounded-lg bg-indigo-600 p-5">
-            Expert
-          </div>
-          <div className="w-3/4 h-3/4 rounded-lg bg-indigo-600 p-5">
-            Master
-          </div >
-          <div className="w-3/4 h-3/4 rounded-lg bg-indigo-600 p-5">
-            Gigachad
-          </div>
-        </div>
       </div>
 
-      
     <Footer />
+
     </div>
   </main>
 )
