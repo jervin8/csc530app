@@ -1,23 +1,25 @@
-"use client"
+
 import ExitButton from "@/components/ProtectedPageComps/ExitButton";
 import ValidatingTextBox from "@/components/ProtectedPageComps/ValidatingTextBox";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
+import LessonsWordsDisplay from "@/components/ProtectedPageComps/LessonsWordsDisplay";
+import { redirect } from "next/navigation";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-export default function VocabLessons() {
-    const [loading, setLoading] = useState(true);
-    const [newWordsID, setNewWordsID] = useState<{ id: any }[] | null>(null);
+export default async function VocabLessons() {
+   
     const supabase = createClient();
   
-    useEffect(() => {
+    
         
-
-        fetchData();
-    }, []);
-    async function fetchData() {
-        try {
-            const { data: { user } } = await supabase.auth.getUser();
+    const {
+        data: { user },
+      } = await supabase.auth.getUser();
+    
+      if (!user) {
+        return redirect("/login");
+      }
             
             
             const { data: userWordIDs } = await supabase.from('UserWords').select('words2ID').eq('userID', user!.id);
@@ -32,31 +34,18 @@ export default function VocabLessons() {
                 .range(0, 4);
 
             console.log("New Word IDs:", fetchedWordsID);
-            setNewWordsID(fetchedWordsID);
+           
             const newwordarr = fetchedWordsID!.map(obj => obj.id);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-            // Handle error, e.g., show an error message to the user
-        } finally {
-            setLoading(false);
-        }
        
-    }
+       
+    
 
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
+ 
     return (
         <main className="w-full">
             <ExitButton />
-            {/* Render the fetched words here */}
-            <div>
-                {newWordsID && newWordsID.map(word => (
-                    <div key={word.id}>{/* Render each word here */}</div>
-                ))}
-            </div>
+            <LessonsWordsDisplay words={newwordarr} />
         </main>
     );
 }
