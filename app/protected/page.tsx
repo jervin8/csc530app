@@ -32,19 +32,21 @@ return (
     <div className="pt-20">
       <div className="w-3/4 h-full container m-auto grid grid-cols-6 grid-rows-3 p-10 gap-10 place-items-center">
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-5">
-          <h1>Vocab</h1>
+          <div className="text-2xl">Vocab</div>
           <VocabLessonButton />
           <VocabReviewButton />
         </div>
 
-        <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-5">
-          <h1>Kanji</h1>
-          <KanjiLessonButton />
-          <KanjiReviewButton />
+        <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-10">
+          <div className="text-2xl h-full">Kanji</div>
+          <div className="flex justify-end">
+            <KanjiLessonButton />
+            <KanjiReviewButton />
+          </div>
         </div>
 
+        {/*Review forcast type thing here. take up two rows in the third colmn slot*/}
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 row-span-3">
-          {/*Review forcast type thing here. take up two rows in the third colmn slot*/}
           <ReviewForecast />
         </div>
 

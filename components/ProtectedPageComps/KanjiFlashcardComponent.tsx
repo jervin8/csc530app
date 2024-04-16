@@ -269,16 +269,20 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
       {remainingWords.length > 0 && (
         <div className="flex justify-center items-center text-center">
+          <div className="w-full">
+            <input
+              type="text"
+              className='text-black w-11/12 p-2 text-3xl rounded-2xl text-center'
+              value={inputValue}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+            />
+          </div>
+          <div>
+            {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
+            {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
+          </div>
           {<p>Answer remove this section later: {currentWord}</p>}
-          {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
-          {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
-          <input
-            type="text"
-            className='text-black w-11/12 p-2 text-3xl rounded-2xl text-center'
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyPress={handleKeyPress}
-          />
           <p>{completedWords}</p>
         </div>
       )}
