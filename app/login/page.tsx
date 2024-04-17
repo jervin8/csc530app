@@ -56,8 +56,6 @@ export default function Login({
     <main className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
       <Navbar/>
     <div className="h-screen flex items-center justify-center w-full gap-2 bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
-      
-
 
         <form className="animate-in flex-1 flex flex-col max-w-md justify-center gap-2 text-foreground">
           <label className="text-md" htmlFor="email">
