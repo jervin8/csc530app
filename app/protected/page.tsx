@@ -31,6 +31,7 @@ return (
     <Navbar/>
     <div className="pt-10 pb-10">
       <div className="w-3/4 h-full container m-auto grid grid-cols-6 grid-rows-3 p-10 gap-10 place-items-center">
+
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-10">
           <div className="text-2xl h-1/2 text-white">Vocab</div>
           <div className="flex justify-end">
