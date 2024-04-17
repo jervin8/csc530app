@@ -55,7 +55,7 @@ return (
         </div>
 
         {/*Review forcast type thing here. take up two rows in the third colmn slot*/}
-        <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 row-span-1 text-white">
+        <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 row-span-1 text-white text-lg">
           <ReviewForecast />
         </div>
 
