@@ -22,8 +22,8 @@ return (
     <Navbar/>
 
     <div className="">
-         <ProfilePage/>
-         </div>
+      <ProfilePage/>
+    </div>
     <Footer />
   </main>
 )
