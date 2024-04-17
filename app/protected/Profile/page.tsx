@@ -21,7 +21,7 @@ return (
   <main className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
     <Navbar/>
 
-    <div className="pt-20">    
+    <div className="">
          <ProfilePage/>
          </div>
     <Footer />
