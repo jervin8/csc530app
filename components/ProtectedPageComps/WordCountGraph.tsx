@@ -87,9 +87,9 @@ const WordCountGraph = () => {
   }, [counts, showWords]);
 
   return (
-    <div> {/* Adjust container dimensions as needed */}
-      <h2 className="text-center">Knowledge Check</h2>
-      <div className="text-center mb-3">
+    <div className="text-md"> {/* Adjust container dimensions as needed */}
+      <h2 className="text-center text-lg mb-0">Knowledge Check</h2>
+      <div className="text-center mb-0">
         <button onClick={() => setShowWords(!showWords)}>
           {showWords ? 'Toggle to Kanji' : 'Toggle to Words'}
         </button>
