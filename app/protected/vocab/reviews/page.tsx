@@ -7,12 +7,12 @@ import FlashcardComponent from "@/components/ProtectedPageComps/VocabFlashcardCo
 
 export default async function VocabReviews() {
     const supabase = createClient();
-  
+
     //redirects to login page if not an authenticated/logged in user
     const {
       data: { user },
     } = await supabase.auth.getUser();
-  
+
     if (!user) {
       return redirect("/login");
     }
@@ -40,11 +40,14 @@ export default async function VocabReviews() {
 
 
 return(
-  <main>
+  <main  className="h-screen w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
     <ExitButton />
 
-    <FlashcardComponent words={engwordarr} />
+    <div className="w-full h-full">
+      <FlashcardComponent words={engwordarr} />
+    </div>
 
+    <p>{JSON.stringify(engwordarr)}</p>
   </main>
 )
 }
