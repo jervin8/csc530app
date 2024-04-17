@@ -29,7 +29,7 @@ function ReviewForecast() {
 
   return (
     <div className="m-auto p-5">
-      <h1>Review Forecast</h1>
+      <div className="text-xl">Review Forecast</div>
       <p>Today: {fakeReviewCounts[currentDay]}</p>
       <ul>
         {/* Gonna turn these into components eventually that receive review related stuff from DB */}

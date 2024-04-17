@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/Navbar";
 import SectionTitle from "@/components/LandingPageComps/SectionTitle";
 import Footer from "@/components/Footer";
