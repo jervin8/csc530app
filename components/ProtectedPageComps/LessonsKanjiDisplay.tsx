@@ -91,30 +91,36 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
   };
 
   return (
-    <div className="">
-      {wordInfo && (
-        <div className="bg-white text-black mt-5 p-10 rounded-lg">
-          <div className="text-2xl">
-            <div className="text-4xl">
-              {wordInfo['kanji'].charAt(0).toUpperCase() + wordInfo['kanji'].slice(1)}
+    <div className="h-screen">
+    {wordInfo && (
+      <div className="text-white dark:text-black rounded-lg text-2xl h-full">
+          <div className="bg-slate-700 dark:bg-gray-200 text-8xl w-full h-1/3 flex justify-center items-center">
+          {wordInfo['kanji'].charAt(0).toUpperCase() + wordInfo['kanji'].slice(1)}
+          </div>
+          <div className="bg-gray-300 p-5 h-1/12 grid grid-cols-2 text-black">
+            <div className="flex justify-start items-center">
+              {currentIndex !== 0 &&(<button onClick={handlePreviousWord} disabled={currentIndex === 0}>{"<--"} Previous</button>)}
             </div>
-            <hr className="my-2 border-black"></hr>
-            <div className="flex items-center">Keyword: <div className=" ml-4 text-4xl">{wordInfo['keyword_6th_ed']}</div></div>
-            <div className="flex items-center">Onyomi: <div className=" ml-4 text-3xl">{wordInfo['on_reading']}</div></div>
-            <div className="flex items-center">Kunyomi: <div className=" ml-4 text-3xl">{wordInfo['kun_reading']}</div></div>
-            <div className="flex items-center">JLPT: <div className=" ml-4 text-3xl">{wordInfo['jlpt']}</div></div>
+            <div className="flex justify-end items-center">
+              {isLastWord ? (
+                <button onClick={handleSubmit}>Submit</button>
+              ) : (
+                <button onClick={handleNextWord}>Next {"-->"}</button>
+              )}
+            </div>
+        </div>
+        <div className="text-black dark:text-white flex flex-col justify-center items-center">
+          <div className="flex flex-col items-center mb-8">
+            <div className="flex items-center text-4xl">Keyword: <div className=" m-4 text-5xl">{wordInfo['keyword_6th_ed']}</div></div>
+            <div className="flex items-center text-3xl">Onyomi: <div className=" m-4 text-4xl">{wordInfo['on_reading']}</div></div>
+            <div className="flex items-center text-3xl">Kunyomi: <div className=" m-4 text-4xl">{wordInfo['kun_reading']}</div></div>
+            <div className="flex items-center text-3xl">JLPT: <div className=" m-4 text-4xl">{wordInfo['jlpt']}</div></div>
           </div>
         </div>
-      )}
-      <div>
-        <button onClick={handlePreviousWord} disabled={currentIndex === 0}>Previous</button>
-        {isLastWord ? (
-          <button onClick={handleSubmit}>Submit</button>
-        ) : (
-          <button onClick={handleNextWord}>Next</button>
-        )}
+
       </div>
-    </div>
+    )}
+  </div>
   );
 };
 
