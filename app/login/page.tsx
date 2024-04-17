@@ -54,11 +54,8 @@ export default function Login({
   return (
 
     <div className="h-screen flex items-center justify-center w-full gap-2 bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
-      
-
-
         <form className="animate-in flex-1 flex flex-col max-w-md justify-center gap-2 text-foreground">
-          <label className="text-md text-black" htmlFor="email">
+          <label className="text-md" htmlFor="email">
             Email
           </label>
           <input
@@ -67,7 +64,7 @@ export default function Login({
             placeholder="you@example.com"
             required
           />
-          <label className="text-md text-black" htmlFor="password">
+          <label className="text-md" htmlFor="password">
             Password
           </label>
           <input
