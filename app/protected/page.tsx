@@ -33,7 +33,10 @@ return (
       <div className="w-3/4 h-screen container m-auto grid grid-cols-6 grid-rows-3 p-10 gap-10 place-items-center">
 
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-10">
-          <div className="text-2xl h-1/2 text-white">Vocab</div>
+          <div className="text-2xl h-3/4 text-white">
+            <p>Vocab</p>
+            {"Reviews Due Today: #"}
+          </div>
           <div className="flex justify-end">
             <VocabLessonButton />
             <VocabReviewButton />
@@ -41,8 +44,11 @@ return (
         </div>
 
         <div className="w-full h-full rounded-lg bg-indigo-600 col-span-2 p-10">
-          <div className="text-2xl h-1/2 text-white">Kanji</div>
-          <div className="flex justify-end">
+          <div className="text-2xl h-3/4 text-white">
+          <p>Kanji</p>
+            {"Reviews Due Today: #"}
+          </div>
+          <div className="flex justify-end mt-auto">
             <KanjiLessonButton />
             <KanjiReviewButton />
           </div>
