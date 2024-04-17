@@ -12,16 +12,14 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
   const [isLastWord, setIsLastWord] = useState<boolean>(false); // Track if the current word is the last one
   const supabase = createClient();
 
-  
+
   useEffect(() => {
-    
     fetchWordInfo(words[currentIndex]); // Fetch initial word info
     setIsLastWord(currentIndex === words.length - 1); // Check if the current word is the last one
   }, [currentIndex]); // Re-fetch word info when currentIndex changes
 
   const fetchWordInfo = async (id: number) => {
     try {
-      
       const { data, error } = await supabase
         .from('Kanji')
         .select('*')
@@ -59,18 +57,17 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       const today = new Date().toISOString().slice(0, 10);
-  
+
       for (const wordId of words) {
         const { data: wordData, error } = await supabase
           .from('Kanji')
           .select('*')
           .eq('id', wordId)
           .single();
-  
+
         if (error) {
           console.error('Error fetching word information:', error);
         } else if (wordData) {
-          
             const { error: insertError } = await supabase.from('UserKanji').insert({
               userID: user!.id,
               kanjiID: wordData.id,
@@ -80,7 +77,6 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
             if (insertError) {
               console.error('Error inserting user word:', insertError);
             }
-          
         } else {
           console.error('Word not found');
         }
@@ -93,7 +89,7 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
   return (
     <div className="h-screen">
     {wordInfo && (
-      <div className="text-white dark:text-black rounded-lg text-2xl h-full">
+      <div className="text-white dark:text-black rounded-lg text-2xl h-full bg-gray-200 dark:bg-slate-700">
           <div className="bg-slate-700 dark:bg-gray-200 text-8xl w-full h-1/3 flex justify-center items-center">
           {wordInfo['kanji'].charAt(0).toUpperCase() + wordInfo['kanji'].slice(1)}
           </div>
