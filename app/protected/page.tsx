@@ -59,7 +59,7 @@ return (
           <ReviewForecast />
         </div>
 
-        <div className=" bg-white text-black w-full rounded-lg p-5 col-span-6 row-span-2 mt-10">
+        <div className=" bg-white text-black w-full rounded-lg p-5 col-span-6 row-span-2">
           <WordCountGraph />
         </div>
       </div>
