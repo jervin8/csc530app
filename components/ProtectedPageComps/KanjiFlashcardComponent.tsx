@@ -254,7 +254,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   }, [completedWords, words]);
 
   return (
-    <div className="h-screen ">
+    <div className="h-screen">
       <div className="text-center h-1/3">
         <div className="bg-slate-700 dark:bg-gray-200 text-white dark:text-black h-3/4 text-8xl w-full flex justify-center items-center">
           {currwordJap}

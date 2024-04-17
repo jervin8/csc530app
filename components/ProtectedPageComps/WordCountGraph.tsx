@@ -63,7 +63,7 @@ const WordCountGraph = () => {
       chartRef.current = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['Rookie', 'Amateur', 'Expert', 'Master', 'Gigachad'],
+          labels: ['Rookie', 'Amateur', 'Expert', 'Master', 'Sensei'],
           datasets: [{
             label: showWords ? 'Word Count' : 'Kanji Count',
             data: counts,
@@ -88,8 +88,8 @@ const WordCountGraph = () => {
 
   return (
     <div className="text-md"> {/* Adjust container dimensions as needed */}
-      <h2 className="text-center text-lg mb-0">Knowledge Check</h2>
-      <div className="text-center mb-0">
+      <h2 className="text-center text-4xl mb-0">Knowledge Check</h2>
+      <div className="text-center text-xl mb-0">
         <button onClick={() => setShowWords(!showWords)}>
           {showWords ? 'Toggle to Kanji' : 'Toggle to Words'}
         </button>
