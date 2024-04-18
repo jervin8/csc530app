@@ -13,8 +13,7 @@ export default async function Landing() {
 
 
 
-  const { data: userkanjiids, error } = await supabase.from('UserKanji').select('kanjiID').eq('userID', user!.id)
-  console.log(userkanjiids);
+  
 
   return (
     <main className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
