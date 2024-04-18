@@ -25,7 +25,12 @@ export default async function Dashboard() {
 
   //selects users
   const { data: Users } = await supabase.from("Users").select();
-
+  const { data: userkanjiids} = await supabase.from('UserKanji').select('kanjiID').eq('userID', user.id)
+  const { data: userwordsids } = await supabase.from('UserWords').select('words2ID').eq('userID', user.id)
+  const wordcount = userwordsids?.length;
+  const kanjicount = userkanjiids?.length;
+console.log(userkanjiids)
+console.log(wordcount)
 return (
   <main className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
     <Navbar/>
@@ -35,7 +40,7 @@ return (
         <div className="w-full rounded-lg bg-indigo-600 col-span-2 p-10">
           <div className="text-2xl h-3/4 text-white">
             <p>Vocab</p>
-            {"Reviews Due Today: #"}
+            {"Reviews Due Today: "+wordcount}
           </div>
           <div className="flex justify-end items-end p-9 pb-0 pr-0 mt-9 ml-9">
             <VocabLessonButton />
@@ -46,7 +51,7 @@ return (
         <div className="w-full rounded-lg bg-indigo-600 col-span-2 p-9 flex flex-col justify-between">
           <div className="text-2xl h-3/4 text-white">
             <p>Kanji</p>
-            {"Reviews Due Today: #"}
+            {"Reviews Due Today: "+kanjicount}
           </div>
           <div className="flex justify-end items-end p-9 pb-0 pr-0 mt-9 ml-9">
             <KanjiLessonButton />
