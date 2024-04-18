@@ -1,4 +1,5 @@
 import Image from "next/image";
+import LogoImage from "@/app/public/img/logo.png";
 import Container from "@/components/LandingPageComps/Container";
 
 const PrimarySection = () => {
@@ -35,7 +36,7 @@ const PrimarySection = () => {
         <div className="flex items-center justify-center w-full lg:w-1/2">
           <div className="">
             <Image
-              src="https://flowbite.com/docs/images/logo.svg"
+              src={LogoImage}
               width={616}
               height={617}
               className={"object-cover"}
