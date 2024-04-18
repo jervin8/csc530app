@@ -17,7 +17,6 @@ export default async function Landing() {
 
   return (
     <main className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
-      console.log(userkanjiids);
       <Navbar />
       <PrimarySection />
       <SectionTitle pretitle="Space Repetition Benefits" title=" Why should you learn through space repitition">
