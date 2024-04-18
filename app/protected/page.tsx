@@ -37,18 +37,18 @@ return (
             <p>Vocab</p>
             {"Reviews Due Today: #"}
           </div>
-          <div className="flex justify-end p-9">
+          <div className="flex justify-end items-end p-9 pb-0 pr-0 mt-9 ml-9">
             <VocabLessonButton />
             <VocabReviewButton />
           </div>
         </div>
 
-        <div className="w-full rounded-lg bg-indigo-600 col-span-2 p-9">
+        <div className="w-full rounded-lg bg-indigo-600 col-span-2 p-9 flex flex-col justify-between">
           <div className="text-2xl h-3/4 text-white">
-          <p>Kanji</p>
+            <p>Kanji</p>
             {"Reviews Due Today: #"}
           </div>
-          <div className="flex justify-end items-center p-10">
+          <div className="flex justify-end items-end p-9 pb-0 pr-0 mt-9 ml-9">
             <KanjiLessonButton />
             <KanjiReviewButton />
           </div>
