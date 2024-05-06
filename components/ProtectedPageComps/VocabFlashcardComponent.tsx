@@ -18,18 +18,14 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
 
   const supabase = createClient();
-  
 
   useEffect(() => {
     // Set the current word to the first word in the remainingWords array
     if (remainingWords.length > 0) {
       setCurrentWordIndex(0);
     }
-   
 
   }, [remainingWords]);
-
-  
 
   const currentWord = remainingWords[currentWordIndex % remainingWords.length];
   interface WordData {
@@ -42,11 +38,11 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         .select('Vocab-Japanese')
         .eq('Vocab-English', word)
         .single();
-  
+
       if (error) {
         throw error;
       }
-  
+
       if (data && 'Vocab-Japanese' in data) {
         const japaneseWord: string = data['Vocab-Japanese'] as string;
         setCurrwordJap(japaneseWord);
@@ -57,12 +53,12 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
       console.error('Error fetching word Japanese:', error);
     }
   };
-  
+
 
   useEffect(() => {
     fetchWordJapanese(currentWord); // Fetch Japanese equivalent when currentWord changes
   }, [currentWord]);
-  
+
   //setting last word = to last word in remaining words array since that is where the most recent wrong answer was
   const lastword = remainingWords[remainingWords.length - 1]
 
@@ -79,22 +75,17 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-    
+
       if (!user) {
         return;
       }
 
-      
-
       //getting todays date
       var myDate = new Date();
-       
 
       //get words2id for current word
       const{data: currwordid} = await supabase.from('Words2').select('id').eq('Vocab-English', currentWord)
       const { id } = currwordid![0];
-      
-      
 
       //get current words's userwordid
       const { data: userwordid } = await supabase.from('UserWords').select('id').eq('userID', user.id).eq('words2ID', id)
@@ -102,19 +93,18 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
       //gett bucket value for current word
       const { data: currentbucket } = await supabase.from('UserWords').select('bucket').eq('id', P).eq('userID', user.id)
-     
+
       //make int holding json currentbucket
       const { bucket: numbucket } = currentbucket![0];
-     
+
       //getting first time int ( 0 or 1 )
       const { data: firsttime } = await supabase.from('UserWords').select('First_Time').eq('id', P)
 
       //make int holding firsttime int
       const { First_Time: newfirsttime } = firsttime![0];
       console.log(newfirsttime);
-     
 
-      
+
 
 //if correct
       if (inputValue.trim() === currentWord) {
@@ -124,9 +114,8 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
           //raise bucket value by 1 if bucket is less than 15
           if(numbucket<10){
             const { error } = await supabase.from('UserWords').update({bucket: numbucket+1}).eq('id', P)
-           
           }
-          
+
           //update mydate to match new bucket date
           switch(numbucket) {
             case 1:
@@ -162,7 +151,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
             default:
               console.log("error new bucket value doesnt match any possible bucket(1-10)");
           }
-          
+
         } else {
           //update mydate to match new bucket date
           switch(numbucket) {
@@ -213,7 +202,7 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
 
         //setting firsttime back to default true for next time they review this word
         const { error } = await supabase.from('UserWords').update({First_Time: 1}).eq('id', P)
-       
+
 
 //if wrong
       } else {
@@ -222,17 +211,14 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
           //lower bucket value by 1 if bucket is greater than 1 and less than 5
           if(numbucket>1 && numbucket<5){
             const { error } = await supabase.from('UserWords').update({bucket: numbucket-1}).eq('id', P)
-           
-          } 
+
+          }
           else if(numbucket>=5){ //lower bucket value by 2 if it is 5 and up
             const { error } = await supabase.from('UserWords').update({bucket: numbucket-2}).eq('id', P)
-            
           }
 
-          
           //setting firsttime to false since they got it wrong on their first time
           const { error } = await supabase.from('UserWords').update({First_Time: 0}).eq('id', P)
-          
         }
 
 
@@ -243,7 +229,6 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
         setInputValue('');
       }
       setCurrentWordIndex(currentWordIndex + 1); // Move to the next word regardless of correctness
-    
     }
   };
 
@@ -263,32 +248,38 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   }, [completedWords, words]);
 
   return (
-    <div>
-    <div className="flex items-center">
-      Kanji Composition:
-      {currwordJap && <span>{currwordJap}</span>}
-    </div>
-    <div></div>
-      <div>
-        
+    <div className="h-screen ">
+      <div className="text-center h-1/3">
+        <div className="bg-slate-700 dark:bg-gray-200 text-white dark:text-black h-3/4 text-8xl w-full flex justify-center items-center">
+          {currwordJap}
+        </div>
+        <div className="text-2xl bg-gray-300 text-black h-1/5 w-full flex justify-center items-center">
+          {remainingWords.length > 0 && (
+            <div>
+            {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
+            {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
+            </div>
+          )}
+        </div>
       </div>
+
       {remainingWords.length > 0 && (
-        <div>
-          <p>Answer remove this section later: {currentWord}</p>
-          {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
-          {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
-          <input
-            type="text"
-            className='text-black'
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyPress={handleKeyPress}
-          />
-          <p>{completedWords}</p>
+        <div className="flex justify-center items-center text-center">
+          <div className="w-full">
+            <input
+              type="text"
+              className='text-black w-11/12 p-2 text-3xl rounded-2xl text-center'
+              value={inputValue}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+            />
+          </div>
         </div>
       )}
       {completedWords.length === words.length && (
-        <p>Congratulations! You have completed all the words! Redirecting...</p>
+          <div className="text-center">
+            <p className="text-xl">Congratulations! You have completed all the words! Redirecting...</p>
+          </div>
       )}
     </div>
   );

@@ -3,8 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ValidatingTextBox from "@/components/ProtectedPageComps/ValidatingTextBox";
 import WordGame from "@/components/ProtectedPageComps/VocabFlashcardComponent";
-import FlashcardComponent from "@/components/ProtectedPageComps/VocabFlashcardComponent";
-import KanjiFlashcardComponent from "@/components/ProtectedPageComps/KanjiFlashcardComponent";
+import FlashcardComponent from "@/components/ProtectedPageComps/KanjiFlashcardComponent";
 
 export default async function KanjiReviews() {
     const supabase = createClient();
@@ -46,7 +45,7 @@ return(
     <ExitButton />
 
     <div className="w-full h-full">
-      <KanjiFlashcardComponent words={engwordarr} />
+      <FlashcardComponent words={engwordarr} />
     </div>
 
     <p>{JSON.stringify(engwordarr)}</p>

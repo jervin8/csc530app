@@ -3,8 +3,17 @@ import PrimarySection from "@/components/LandingPageComps/PrimarySection";
 import SectionTitle from "@/components/LandingPageComps/SectionTitle";
 import Testimonials from "@/components/LandingPageComps/Testimonials";
 import Footer from "@/components/Footer";
+import { createClient } from "@/utils/supabase/server";
 
-export default function Landing() {
+export default async function Landing() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+
+
+  
 
   return (
     <main className="h-full w-full bg-gray-200 dark:bg-slate-700 text-black dark:text-white">

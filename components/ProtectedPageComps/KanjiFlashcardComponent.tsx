@@ -254,16 +254,18 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
   }, [completedWords, words]);
 
   return (
-    <div className="h-screen ">
+    <div className="h-screen">
       <div className="text-center h-1/3">
         <div className="bg-slate-700 dark:bg-gray-200 text-white dark:text-black h-3/4 text-8xl w-full flex justify-center items-center">
           {currwordJap}
         </div>
         <div className="text-2xl bg-gray-300 text-black h-1/5 w-full flex justify-center items-center">
-          <div>
-            Kanji Composition:
-            {currwordJap && <span>{currwordJap}</span>}
-          </div>
+          {remainingWords.length > 0 && (
+            <div>
+            {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
+            {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
+            </div>
+          )}
         </div>
       </div>
 
@@ -278,18 +280,12 @@ const FlashcardComponent: React.FC<Props> =  ({ words }) => {
               onKeyPress={handleKeyPress}
             />
           </div>
-          <div>
-            {isCorrect && <p style={{ color: 'green' }}>Correct! Well done!</p>}
-            {isIncorrect && <p style={{ color: 'red' }}>Wrong! The correct answer was: {lastword}</p>}
-          </div>
-          {<p>Answer remove this section later: {currentWord}</p>}
-          <p>{completedWords}</p>
         </div>
       )}
       {completedWords.length === words.length && (
-        <div className="text-center">
-          <p>Congratulations! You have completed all the words! Redirecting...</p>
-        </div>
+          <div className="text-center">
+            <p className="text-xl">Congratulations! You have completed all the words! Redirecting...</p>
+          </div>
       )}
     </div>
   );

@@ -8,20 +8,17 @@ import { redirect } from "next/navigation";
 import { useState } from "react";
 
 export default async function VocabLessons() {
-   
+
     const supabase = createClient();
-  
-    
-        
+
     const {
         data: { user },
       } = await supabase.auth.getUser();
-    
+
       if (!user) {
         return redirect("/login");
       }
-            
-            
+
             const { data: userWordIDs } = await supabase.from('UserWords').select('words2ID').eq('userID', user!.id);
             const userwordarr = userWordIDs!.map(obj => obj.words2ID);
             const formattedString = `(${userwordarr.join(',')})`;
@@ -34,16 +31,11 @@ export default async function VocabLessons() {
                 .range(0, 4);
 
             console.log("New Word IDs:", fetchedWordsID);
-           
+
             const newwordarr = fetchedWordsID!.map(obj => obj.id);
-       
-       
-    
 
-
- 
     return (
-        <main className="w-full">
+        <main className="w-full h-screen bg-gray-200 dark:bg-slate-700 text-black dark:text-white">
             <ExitButton />
             <LessonsWordsDisplay words={newwordarr} />
         </main>

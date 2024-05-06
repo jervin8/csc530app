@@ -12,16 +12,13 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
   const [isLastWord, setIsLastWord] = useState<boolean>(false); // Track if the current word is the last one
   const supabase = createClient();
 
-  
   useEffect(() => {
-    
     fetchWordInfo(words[currentIndex]); // Fetch initial word info
     setIsLastWord(currentIndex === words.length - 1); // Check if the current word is the last one
   }, [currentIndex]); // Re-fetch word info when currentIndex changes
 
   const fetchWordInfo = async (id: number) => {
     try {
-      
       const { data, error } = await supabase
         .from('Words2')
         .select('*')
@@ -59,18 +56,17 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       const today = new Date().toISOString().slice(0, 10);
-  
+
       for (const wordId of words) {
         const { data: wordData, error } = await supabase
           .from('Words2')
           .select('*')
           .eq('id', wordId)
           .single();
-  
+
         if (error) {
           console.error('Error fetching word information:', error);
         } else if (wordData) {
-          
             const { error: insertError } = await supabase.from('UserWords').insert({
               userID: user!.id,
               words2ID: wordData.id,
@@ -80,7 +76,6 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
             if (insertError) {
               console.error('Error inserting user word:', insertError);
             }
-          
         } else {
           console.error('Word not found');
         }
@@ -91,30 +86,36 @@ const LessonsWordsDisplay: React.FC<Props> = ({ words }) => {
   };
 
   return (
-    <div className="">
+    <div className="h-screen">
       {wordInfo && (
-        <div className="bg-white text-black mt-5 p-10 rounded-lg">
-          <div className="text-2xl">
-            <div className="text-4xl">
+        <div className="text-white dark:text-black rounded-lg text-2xl h-full">
+            <div className="bg-slate-700 dark:bg-gray-200 text-8xl w-full h-1/3 flex justify-center items-center">
               {wordInfo['Vocab-Japanese'].charAt(0).toUpperCase() + wordInfo['Vocab-Japanese'].slice(1)}
             </div>
-            <hr className="my-2 border-black"></hr>Vocab-Japanese
-            <div className="flex items-center">English Composition:<div className=" ml-4 text-4xl">{wordInfo['Vocab-English']}</div></div>
-            <div className="flex items-center">Part of Speech: <div className=" ml-4 text-3xl">{wordInfo['Part of Speech'].charAt(0).toUpperCase() + wordInfo['Part of Speech'].slice(1)}</div></div>
-            <div className="flex items-center">Sentence-Japanese: <div className=" ml-4 text-3xl">{wordInfo['Sentence-Japanese']}</div></div>
-            <div className="flex items-center">Sentence-English: <div className=" ml-4 text-3xl">{wordInfo['Sentence-English']}</div></div>
-            <div className="flex items-center">Vocab-Furigana:  <div className=" ml-4 text-3xl">{wordInfo['Vocab-Furigana']}</div></div>
+            <div className="bg-gray-300 p-5 h-1/12 grid grid-cols-2 text-black">
+              <div className="flex justify-start items-center">
+                {currentIndex !== 0 &&(<button onClick={handlePreviousWord} disabled={currentIndex === 0}>{"<--"} Previous</button>)}
+              </div>
+              <div className="flex justify-end items-center">
+                {isLastWord ? (
+                  <button onClick={handleSubmit}>Submit</button>
+                ) : (
+                  <button onClick={handleNextWord}>Next {"-->"}</button>
+                )}
+              </div>
           </div>
+          <div className="text-black dark:text-white flex flex-col justify-center items-center">
+            <div className="flex flex-col items-center mb-8">
+              <div className="flex items-center text-3xl">English Composition:<div className="m-4 text-4xl">{wordInfo['Vocab-English']}</div></div>
+              <div className="flex items-center text-2xl">Part of Speech: <div className="m-4 text-3xl">{wordInfo['Part of Speech'].charAt(0).toUpperCase() + wordInfo['Part of Speech'].slice(1)}</div></div>
+              <div className="flex items-center text-2xl">Sentence-Japanese: <div className="m-4 text-3xl">{wordInfo['Sentence-Japanese']}</div></div>
+              <div className="flex items-center text-2xl">Sentence-English: <div className="m-4 text-3xl">{wordInfo['Sentence-English']}</div></div>
+              <div className="flex items-center text-2xl">Vocab-Furigana:  <div className="m-4 text-3xl">{wordInfo['Vocab-Furigana']}</div></div>
+            </div>
+          </div>
+
         </div>
       )}
-      <div>
-        <button onClick={handlePreviousWord} disabled={currentIndex === 0}>Previous</button>
-        {isLastWord ? (
-          <button onClick={handleSubmit}>Submit</button>
-        ) : (
-          <button onClick={handleNextWord}>Next</button>
-        )}
-      </div>
     </div>
   );
 };
